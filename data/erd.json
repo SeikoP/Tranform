@@ -1,0 +1,50 @@
+{
+    "Dim_Customer": [
+        {
+            "name": " Customer",
+            "is_primary": true,
+            "ref_table": null,
+            "ref_column": null
+        }
+    ],
+    "Dim_Product": [
+        {
+            "name": " Product",
+            "is_primary": true,
+            "ref_table": null,
+            "ref_column": null
+        },
+        {
+            "name": " Category",
+            "is_primary": false,
+            "ref_table": null,
+            "ref_column": null
+        }
+    ],
+    "Fact_Transaction": [
+        {
+            "name": "TransactionID",
+            "is_primary": false,
+            "ref_table": null,
+            "ref_column": null
+        },
+        {
+            "name": " Customer",
+            "is_primary": false,
+            "ref_table": "Dim_Customer",
+            "ref_column": " Customer"
+        },
+        {
+            "name": " Product",
+            "is_primary": false,
+            "ref_table": "Dim_Product",
+            "ref_column": " Product"
+        },
+        {
+            "name": " Amount",
+            "is_primary": false,
+            "ref_table": null,
+            "ref_column": null
+        }
+    ]
+}

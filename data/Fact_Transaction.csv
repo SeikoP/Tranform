@@ -1,0 +1,4 @@
+TransactionID, Amount, Customer_id, Product_id
+T001,1200,1,1
+T002,800,2,2
+T003,150,1,3
