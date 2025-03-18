@@ -3,6 +3,15 @@ import json
 import flet as ft
 import os
 import csv
+import sys
+
+# Hàm để lấy đường dẫn động
+def resource_path(relative_path):
+    """Lấy đường dẫn tương đối đến tài nguyên, hoạt động cả khi đóng gói và không đóng gói"""
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    else:
+        return os.path.join(os.path.dirname(__file__), relative_path)
 
 def analyze_dependencies(df: pd.DataFrame):
     """Phân tích dữ liệu để đề xuất bảng Dim và Fact"""
@@ -10,7 +19,6 @@ def analyze_dependencies(df: pd.DataFrame):
     for col in df.columns:
         unique_count = df[col].nunique()
         total_count = len(df)
-        # Nếu cột có ít giá trị duy nhất, đề xuất làm bảng Dim
         if unique_count < total_count * 0.3:  # Ngưỡng 30% để coi là thực thể độc lập
             suggestions['Dim'].append(col)
         else:
@@ -74,13 +82,17 @@ def normalize_to_3nf(df: pd.DataFrame, erd: dict):
     
     return normalized_tables
 
-def normalization(df: pd.DataFrame, page: ft.Page, format_dropdown, data_path: str = r'D:\TranformData\Tranform_Data\data'):
+def normalization(df: pd.DataFrame, page: ft.Page, format_dropdown, data_path: str = None):
     if df is None or df.empty:
         page.dialog = ft.AlertDialog(title=ft.Text("⚠ Dữ liệu đầu vào trống hoặc không hợp lệ!"))
         page.dialog.open = True
         page.update()
         return
 
+    # Sử dụng resource_path nếu data_path không được truyền vào
+    if data_path is None:
+        data_path = resource_path("data")
+    
     erd_path = os.path.join(data_path, 'erd.json')
     if not os.path.exists(erd_path):
         page.dialog = ft.AlertDialog(title=ft.Text("⚠ Bạn chưa lưu cấu trúc ERD!"))
@@ -92,7 +104,6 @@ def normalization(df: pd.DataFrame, page: ft.Page, format_dropdown, data_path: s
         with open(erd_path, 'r', encoding='utf-8') as file:
             erd = json.load(file)
         
-        # Kiểm tra tính hợp lệ của ERD
         for table_name, columns in erd.items():
             if table_name.lower().startswith('dim_') and not any(col.get('is_primary', False) for col in columns):
                 page.dialog = ft.AlertDialog(title=ft.Text(f"⚠ Bảng {table_name} phải có khóa chính!"))

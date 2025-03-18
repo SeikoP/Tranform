@@ -3,10 +3,19 @@ import pandas as pd
 import json
 from ETL import normalization, analyze_dependencies
 import os
+import sys
+
+# Hàm để lấy đường dẫn động
+def resource_path(relative_path):
+    """Lấy đường dẫn tương đối đến tài nguyên, hoạt động cả khi đóng gói và không đóng gói"""
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    else:
+        return os.path.join(os.path.dirname(__file__), relative_path)
 
 def hi(page: ft.Page):
     page.title = "Chuyển đổi dữ liệu sang 3NF"
-    page.window_icon = r'D:\TranformData\Tranform_Data\assets\normalization.png'
+    page.window_icon = resource_path("assets/normalization.ico")  # Sửa đường dẫn icon
     page.window_resizable = True
     page.theme_mode = "light"
     page.window_width = 1800
@@ -182,14 +191,13 @@ def hi(page: ft.Page):
             
             edit_dialog = ft.AlertDialog(
                 title=ft.Text(f"Chỉnh sửa bảng {table_name}"),
-                content=ft.Column([], scroll="auto", width=600),
+                content=ft.Column([], scroll="auto", width=800),
                 actions=[
                     ft.ElevatedButton("Lưu", on_click=lambda e: save_edit(table_name, edit_dialog)),
                     ft.ElevatedButton("Hủy", on_click=lambda e: close_dialog(edit_dialog))
                 ]
             )
             
-            # Tạo danh sách các control cho từng trường
             controls_dict = {}
             for col in tables[table_name]:
                 col_name_field = ft.TextField(value=col['name'], width=150, disabled=True)
@@ -199,7 +207,7 @@ def hi(page: ft.Page):
                     options=[ft.dropdown.Option(t) for t in tables.keys() if t.lower().startswith('dim_')],
                     value=col['ref_table'],
                     label="Foreign Key",
-                    disabled=not table_name.lower().startswith('fact_')  # Chỉ cho phép FK trong Fact
+                    disabled=not table_name.lower().startswith('fact_')
                 )
                 ref_col_dropdown = ft.Dropdown(
                     width=200,
@@ -220,7 +228,7 @@ def hi(page: ft.Page):
             
             page.dialog = edit_dialog
             edit_dialog.open = True
-            page.session.set(f"edit_controls_{table_name}", controls_dict)  # Lưu tạm control để truy cập sau
+            page.session.set(f"edit_controls_{table_name}", controls_dict)
             page.update()
 
         def save_edit(table_name, dialog):
@@ -266,7 +274,7 @@ def hi(page: ft.Page):
                     update_erd()
 
         def save_tables():
-            data_path = r'D:\TranformData\Tranform_Data\data'
+            data_path = resource_path("data")  # Sử dụng đường dẫn động
             if not os.path.exists(data_path):
                 os.makedirs(data_path)
             try:
@@ -401,4 +409,5 @@ def hi(page: ft.Page):
     page.on_route_change = route_change
     page.go("/preview")
 
-ft.app(target=hi)
+if __name__ == "__main__":
+    ft.app(target=hi)
