@@ -27,3 +27,41 @@
 Cài đặt thư viện:
 ```bash
 pip install -r requirements.txt
+```
+# Các bước sử dụng
+## Tải file CSV: Nhấn 📂 Chọn file CSV và chọn file cần chuẩn hóa.
+
+-  Tạo sơ đồ ERD:
+
+-  Chọn 📊 Tạo sơ đồ ERD.
+
+-  Nhập tên bảng (bắt đầu bằng Dim_ hoặc Fact_).
+
+-  Thêm các trường vào bảng.
+
+-  Đối với bảng Fact: chọn khóa ngoại tham chiếu bảng Dim.
+
+-  Có thể nhấn 🤖 Đề xuất ERD để hệ thống tự động gợi ý sơ đồ.
+
+-  Lưu cấu trúc bằng cách nhấn 💾 Lưu cấu trúc.
+
+-  Chuẩn hóa dữ liệu:
+
+-  Chọn định dạng file (CSV, Excel, Database Script).
+
+-  Nhấn Normalization để xuất dữ liệu chuẩn hóa.
+
+### Nếu chọn database, có thể nhấn Create database scripts để tạo script SQL.
+
+```
+├── assets/
+│   └── normalization.ico        # Icon cho ứng dụng
+├── data/
+│   └── erd.json                 # File lưu cấu trúc ERD
+│   └── create_data.sql          # Script SQL được tạo (nếu chọn database)
+├── etl.py                       # Module xử lý chuẩn hóa dữ liệu
+├── main.py                      # Giao diện chính của ứng dụng
+├── normalization.py             # Module xử lý lưu file và tạo script SQL
+├── utils.py                     # Tiện ích hỗ trợ (phân tích phụ thuộc, lưu/xóa bảng, lấy dữ liệu, ...)
+└── README.md                    # File hướng dẫn sử dụng
+```
