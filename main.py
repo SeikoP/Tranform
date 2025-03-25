@@ -8,7 +8,7 @@ def create_status_bar(page: ft.Page):
     status_text = ft.Text("✅ Sẵn sàng", size=14, color="green")
     status_bar = ft.Container(
         content=status_text, padding=ft.padding.only(left=20, right=20, top=10, bottom=10),
-        bgcolor="white", alignment=ft.alignment.center_left, border=ft.border.only(top=ft.BorderSide(1, "#E5E7EB"))
+        bgcolor="#18c9e7", alignment=ft.alignment.center_left
     )
     
     def update_status(text, color="black"):
@@ -32,7 +32,7 @@ def main(page: ft.Page):
     page.overlay.append(progress_bar)
 
     file_picker = ft.FilePicker(on_result=lambda e: on_file_selected(e, page, refresh_data_tab, progress_bar))
-    export_picker = ft.FilePicker(on_result=lambda e: on_export_selected(e, page, page.session.get("export_format", "csv")))
+    export_picker = ft.FilePicker(on_result=lambda e: on_export_selected(e, page, page.session.get("export_format") or "csv"))
     page.overlay.extend([file_picker, export_picker])
 
     page.session.set("tables", {})

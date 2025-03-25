@@ -60,7 +60,7 @@ def refresh_erd_tab(page: ft.Page, erd_layout, update_status):
             )
             additional_controls.extend([fk_dropdown, ref_column_dropdown])
             add_button = ft.ElevatedButton(
-                "➕ Thêm", bgcolor="#10B981", color="white", width=100,
+                "➕ Add", bgcolor="#10B981", color="white", width=100,
                 style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), elevation=2),
                 on_click=lambda _, t=table, fd=table_field_dropdown, pk=pk_checkbox_table, fk=fk_dropdown, rc=ref_column_dropdown: (
                     add_field(t, fd.value, page.session.get("tables"), page, pk.value, fk.value, rc.value) if fd.value else None
@@ -68,7 +68,7 @@ def refresh_erd_tab(page: ft.Page, erd_layout, update_status):
             )
         else:
             add_button = ft.ElevatedButton(
-                "➕ Thêm", bgcolor="#10B981", color="white", width=100,
+                "➕ Add", bgcolor="#10B981", color="white", width=100,
                 style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), elevation=2),
                 on_click=lambda _, t=table, fd=table_field_dropdown, pk=pk_checkbox_table: (
                     add_field(t, fd.value, page.session.get("tables"), page, pk.value) if fd.value else None

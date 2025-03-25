@@ -32,13 +32,13 @@ def create_erd_tab(page: ft.Page, update_status):
                 on_click=lambda _: add_table(table_name_input, page.session.get("tables"), page, update_status, lambda: refresh_erd_tab(page, erd_layout, update_status))
             ),
             ft.Container(height=10),
-            ft.Column([column_dropdown, ft.Row([pk_checkbox], alignment=ft.MainAxisAlignment.START),
-                ft.ElevatedButton(
-                    "➕ Thêm trường", bgcolor="#10B981", color="white", width=300, height=45,
-                    style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), elevation=2),
-                    on_click=lambda _: add_field(table_name_input.value.strip(), column_dropdown.value, page.session.get("tables"), page, pk_checkbox.value) if table_name_input.value.strip() and column_dropdown.value else None
-                )], spacing=10),
-            ft.Container(height=20),
+            # ft.Column([column_dropdown, ft.Row([pk_checkbox], alignment=ft.MainAxisAlignment.START),
+            #     ft.ElevatedButton(
+            #         "➕ Thêm trường", bgcolor="#10B981", color="white", width=300, height=45,
+            #         style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), elevation=2),
+            #         on_click=lambda _: add_field(table_name_input.value.strip(), column_dropdown.value, page.session.get("tables"), page, pk_checkbox.value) if table_name_input.value.strip() and column_dropdown.value else None
+            #     )], spacing=10),
+            # ft.Container(height=20),
             ft.ElevatedButton(
                 "🤖 Đề xuất ERD", bgcolor="#8B5CF6", color="white", width=300, height=45,
                 style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), elevation=2),
@@ -90,7 +90,6 @@ def create_erd_tab(page: ft.Page, update_status):
         content=ft.Column([
             ft.Text("Danh sách bảng", size=20, weight="bold", color="#1F2937"),
             erd_layout,
-            ft.Row([format_dropdown, normalize_btn, create_db_btn], alignment=ft.MainAxisAlignment.END, spacing=15)
         ], spacing=15)
     )
     

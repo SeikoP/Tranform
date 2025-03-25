@@ -1,0 +1,53 @@
+name: Python Application CI
+
+# Kích hoạt workflow khi push hoặc pull request vào nhánh main
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# Công việc (jobs) sẽ chạy
+jobs:
+  build:
+    # Hệ điều hành để chạy workflow
+    runs-on: window-latest
+
+    # Các bước thực thi
+    steps:
+      # 1. Checkout mã nguồn từ repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Cài đặt Python (phiên bản 3.8 hoặc cao hơn)
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'  # Có thể thay đổi thành phiên bản bạn muốn (3.9, 3.10, v.v.)
+
+      # 3. Cài đặt dependencies từ requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Chạy kiểm tra (nếu có test, thay bằng lệnh thực tế)
+      - name: Run tests
+        run: |
+          # Nếu bạn có file test (ví dụ: test_app.py), thay bằng:
+          # python -m unittest discover -s tests
+          echo "Chưa có test để chạy. Ứng dụng đã được build thành công!"
+
+      # 5. (Tùy chọn) Build ứng dụng nếu cần (ví dụ: với PyInstaller)
+      - name: Build executable (optional)
+        run: |
+          pip install pyinstaller
+          pyinstaller --onefile main.py
+        # Kết quả sẽ nằm trong thư mục dist/
+
+      # 6. (Tùy chọn) Upload artifact (file thực thi) nếu build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: 3NF-Tool
+          path: dist/main
