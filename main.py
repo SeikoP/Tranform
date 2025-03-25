@@ -1,9 +1,23 @@
 import flet as ft
 from ui.sidebar import create_sidebar
 from ui.data_preview import create_data_preview_tab, refresh_data_tab
-from ui.erd_tab import create_erd_tab, refresh_erd_tab
-from ui.status_bar import create_status_bar
+from ui.erd_tab import create_erd_tab
 from utils.file_utils import on_file_selected, on_export_selected
+
+def create_status_bar(page: ft.Page):
+    status_text = ft.Text("✅ Sẵn sàng", size=14, color="green")
+    status_bar = ft.Container(
+        content=status_text, padding=ft.padding.only(left=20, right=20, top=10, bottom=10),
+        bgcolor="white", alignment=ft.alignment.center_left, border=ft.border.only(top=ft.BorderSide(1, "#E5E7EB"))
+    )
+    
+    def update_status(text, color="black"):
+        status_text.value = text
+        status_text.color = color
+        page.update()
+    
+    page.session.set("status_bar", status_bar)
+    return status_bar, update_status
 
 def main(page: ft.Page):
     page.title = "Công cụ Chuẩn hóa Dữ liệu 3NF"
@@ -11,20 +25,21 @@ def main(page: ft.Page):
     page.window_height = 900
     page.window_resizable = True
     page.theme_mode = "light"
-    page.bgcolor = "#F5F5F5"
+    page.bgcolor = "#F5F5F5"  # Màu nền chính của ứng dụng
     page.padding = 0
 
-    file_picker = ft.FilePicker(on_result=lambda e: on_file_selected(e, page, refresh_data_tab))
-    export_picker = ft.FilePicker(on_result=lambda e: on_export_selected(e, page))
+    progress_bar = ft.ProgressBar(width=400, visible=False)
+    page.overlay.append(progress_bar)
+
+    file_picker = ft.FilePicker(on_result=lambda e: on_file_selected(e, page, refresh_data_tab, progress_bar))
+    export_picker = ft.FilePicker(on_result=lambda e: on_export_selected(e, page, page.session.get("export_format", "csv")))
     page.overlay.extend([file_picker, export_picker])
 
     page.session.set("tables", {})
-
     status_bar, update_status = create_status_bar(page)
     sidebar = create_sidebar(page, file_picker, export_picker, update_status)
     data_tab_container = create_data_preview_tab(page)
     erd_tab_container = create_erd_tab(page, update_status)
-
     tabs = ft.Tabs(
         selected_index=0,
         animation_duration=300,
