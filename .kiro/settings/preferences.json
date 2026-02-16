@@ -1,0 +1,29 @@
+{
+  "agent": {
+    "behavior": {
+      "createDocumentationFiles": false,
+      "createReadmeFiles": false,
+      "createArchitectureFiles": false,
+      "createGuideFiles": false,
+      "autoGenerateComments": false,
+      "verboseExplanations": false
+    },
+    "fileCreation": {
+      "requireExplicitRequest": true,
+      "confirmBeforeCreating": false,
+      "excludePatterns": [
+        "README*.md",
+        "ARCHITECTURE.md",
+        "GUIDE.md",
+        "TUTORIAL.md",
+        "CONTRIBUTING.md",
+        "CHANGELOG.md"
+      ]
+    },
+    "codeStyle": {
+      "minimalComments": true,
+      "focusOnCode": true,
+      "avoidRedundantExplanations": true
+    }
+  }
+}
