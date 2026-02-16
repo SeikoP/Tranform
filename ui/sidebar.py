@@ -2,14 +2,15 @@ import flet as ft
 
 def create_sidebar(page: ft.Page, file_picker, export_picker, update_status):
     def change_theme(e):
-        page.theme_mode = "light" if page.theme_mode == "dark" else "dark"
-        theme_icon.icon = ft.icons.DARK_MODE if page.theme_mode == "light" else ft.icons.LIGHT_MODE
+        page.theme_mode = ft.ThemeMode.LIGHT if page.theme_mode == ft.ThemeMode.DARK else ft.ThemeMode.DARK
+        theme_icon.icon = ft.icons.DARK_MODE_OUTLINED if page.theme_mode == ft.ThemeMode.LIGHT else ft.icons.LIGHT_MODE_OUTLINED
         page.update()
 
     theme_icon = ft.IconButton(
-        icon=ft.icons.DARK_MODE if page.theme_mode == "light" else ft.icons.LIGHT_MODE,
+        icon=ft.Icons.DARK_MODE_OUTLINED,
         on_click=change_theme,
-        tooltip="Chuyển đổi theme"
+        tooltip="Chuyển đổi Giao diện",
+        icon_color=ft.Colors.BLUE_200,
     )
 
     def on_export_click(e):
@@ -19,29 +20,68 @@ def create_sidebar(page: ft.Page, file_picker, export_picker, update_status):
             show_export_dialog(page, export_picker, update_status)
 
     sidebar = ft.Container(
-        width=250,
-        bgcolor="#1F2937",
-        padding=10,
+        width=280,
+        bgcolor="#0F172A", # Deep Slate/Navy
+        padding=ft.padding.all(20),
         content=ft.Column([
-            ft.Row([ft.Text("Công cụ 3NF", size=20, weight="bold", color="white"), theme_icon], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-            ft.Divider(color="#374151"),
+            # Logo/Header Section
+            ft.Row([
+                ft.Icon(ft.Icons.AUTO_AWESOME_MOTION, color=ft.Colors.BLUE_400, size=30),
+                ft.Text("Tranform 3NF", size=22, weight=ft.FontWeight.BOLD, color="white"),
+            ], alignment=ft.MainAxisAlignment.START, spacing=10),
+            
+            ft.Container(height=20),
+            
+            # Action Buttons
+            ft.Text("THAO TÁC", size=12, weight=ft.FontWeight.W_500, color=ft.Colors.BLUE_GREY_400, letter_spacing=1.2),
+            ft.Divider(color=ft.Colors.BLUE_GREY_800, height=1),
+            
             ft.ElevatedButton(
-                "📂 Mở CSV", bgcolor="#3B82F6", color="white", width=200, height=45,
-                style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), elevation=2),
+                "📂 Mở File CSV", 
+                icon=ft.Icons.UPLOAD_FILE_ROUNDED,
+                bgcolor=ft.Colors.BLUE_600, 
+                color="white", 
+                width=240, 
+                height=50,
+                style=ft.ButtonStyle(
+                    shape=ft.RoundedRectangleBorder(radius=12),
+                    elevation={"hovered": 5, "": 2},
+                ),
                 on_click=lambda _: file_picker.pick_files(
                     allow_multiple=False,
                     allowed_extensions=["csv"],
                     dialog_title="Chọn file CSV"
                 )
             ),
+            
             ft.ElevatedButton(
-                "💾 Xuất Dữ liệu", bgcolor="#10B981", color="white", width=200, height=45,
-                style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), elevation=2),
+                "💾 Xuất Kết Quả", 
+                icon=ft.Icons.REPLY_ALL_ROUNDED,
+                bgcolor=ft.Colors.TEAL_600, 
+                color="white", 
+                width=240, 
+                height=50,
+                style=ft.ButtonStyle(
+                    shape=ft.RoundedRectangleBorder(radius=12),
+                    elevation={"hovered": 5, "": 2},
+                ),
                 on_click=on_export_click
-            )
+            ),
+            
+            ft.Spacer(),
+            
+            # Bottom section
+            ft.Divider(color=ft.Colors.BLUE_GREY_800),
+            ft.Row([
+                ft.Text("Giao diện", color=ft.Colors.BLUE_GREY_200),
+                theme_icon
+            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
+            ft.Text("v2.0.0 - Premium Edition", size=10, color=ft.Colors.BLUE_GREY_600, italic=True)
+            
         ], spacing=15, alignment=ft.MainAxisAlignment.START)
     )
     return sidebar
+
 
 def show_export_dialog(page, export_picker, update_status):
     df = page.session.get("file_path")
@@ -76,7 +116,7 @@ def show_export_dialog(page, export_picker, update_status):
     )
     
     close_btn = ft.IconButton(
-        icon=ft.icons.CLOSE,
+        icon=ft.Icons.CLOSE,
         style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), elevation=2),
         on_click=lambda _: (setattr(page.dialog, "open", False), page.update())
     )
@@ -105,7 +145,7 @@ def show_export_dialog(page, export_picker, update_status):
             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN, spacing=10),
             bgcolor="#FFFFFF", border_radius=10, padding=20
         ),
-        bgcolor=ft.colors.TRANSPARENT,
+        bgcolor=ft.Colors.TRANSPARENT,
         modal=True
     )
     

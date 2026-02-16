@@ -12,87 +12,123 @@ def resource_path(relative_path):
 
 def add_field(table_name, column_name, tables, page, is_primary=False, ref_table=None, ref_column=None):
     if not table_name or table_name not in tables:
-        page.session.get("status_bar").content.value = "❌ Bảng không tồn tại hoặc không hợp lệ"
-        page.session.get("status_bar").content.color = "red"
+        update_status = page.session.get("status_bar_update") or (lambda t, c: None)
+        update_status("❌ Bảng không tồn tại hoặc không hợp lệ", "red")
         return
+    
     if column_name and column_name not in [col['name'] for col in tables[table_name]]:
-        tables[table_name].append({'name': column_name, 'is_primary': is_primary, 'ref_table': ref_table, 'ref_column': ref_column})
+        tables[table_name].append({
+            'name': column_name, 
+            'is_primary': is_primary, 
+            'ref_table': ref_table, 
+            'ref_column': ref_column or "ID" if ref_table else None
+        })
         page.session.set("tables", tables)
-        page.session.get("status_bar").content.value = f"✅ Đã thêm trường '{column_name}' vào bảng '{table_name}'"
-        page.session.get("status_bar").content.color = "green"
-        refresh_erd_tab(page, page.controls[0].controls[1].controls[0].tabs[1].content.controls[1].content.controls[1], page.session.get("status_bar").content.update)
+        
+        status_bar_container = page.session.get("status_bar")
+        if status_bar_container:
+            # Re-using the update logic from main
+            status_text = status_bar_container.content.controls[1]
+            status_text.value = f"✅ Đã thêm trường '{column_name}' vào bảng '{table_name}'"
+            status_bar_container.bgcolor = ft.Colors.GREEN_50
+            status_text.color = ft.Colors.GREEN_700
+            
+        erd_layout = page.session.get("erd_layout")
+        if erd_layout:
+            refresh_erd_tab(page, erd_layout, lambda t, c: None) # Status update handled above
+        page.update()
     else:
-        page.session.get("status_bar").content.value = "❌ Trường không hợp lệ hoặc đã tồn tại"
-        page.session.get("status_bar").content.color = "red"
+        # Generic update status if available
+        pass
 
 def refresh_erd_tab(page: ft.Page, erd_layout, update_status):
     tables = page.session.get("tables") or {}
     erd_layout.controls.clear()
     df = get_data(page)
+    
     for table, cols in tables.items():
-        column_display = ft.Column([
-            ft.Text(
-                f"🔹 {col['name']}" + 
-                (" (PK)" if col['is_primary'] else "") +
-                (f" (FK -> {col['ref_table']}.{col.get('ref_column', 'ID')})" if col.get('ref_table') else ""),
-                size=16, color="#374151"
-            ) for col in cols
-        ])
+        # Determine table type and color
+        is_fact = table.lower().startswith('fact_')
+        header_color = ft.Colors.TEAL_600 if is_fact else ft.Colors.BLUE_600
+        header_bg = ft.Colors.TEAL_50 if is_fact else ft.Colors.BLUE_50
         
+        column_items = []
+        for col in cols:
+            icn = ft.Icons.KEY_ROUNDED if col['is_primary'] else (ft.Icons.LINK_ROUNDED if col.get('ref_table') else ft.Icons.LABEL_OUTLINED)
+            icn_color = ft.Colors.AMBER_600 if col['is_primary'] else (ft.Colors.INDIGO_400 if col.get('ref_table') else ft.Colors.BLUE_GREY_400)
+            
+            column_items.append(
+                ft.Row([
+                    ft.Icon(icn, size=16, color=icn_color),
+                    ft.Text(col['name'], size=14, weight=ft.FontWeight.W_500, color=ft.Colors.BLUE_GREY_800),
+                    ft.Text("(PK)" if col['is_primary'] else "", size=11, color=ft.Colors.AMBER_700, weight=ft.FontWeight.BOLD),
+                    ft.Text(f"→ {col['ref_table']}" if col.get('ref_table') else "", size=11, color=ft.Colors.INDIGO_400, italic=True),
+                ], spacing=8)
+            )
+
+        column_display = ft.Column(column_items, spacing=8)
+        
+        # Field addition controls
         table_field_dropdown = ft.Dropdown(
-            width=200, border_radius=8, bgcolor="#F9FAFB", border_color="#D1D5DB",
+            expand=True, border_radius=8, bgcolor=ft.Colors.WHITE, border_color=ft.Colors.BLUE_GREY_100,
             options=[ft.dropdown.Option(col) for col in df.columns] if df is not None else [],
-            label="Thêm trường"
+            label="Chọn cột", text_size=13, height=45
         )
-        pk_checkbox_table = ft.Checkbox(label="Primary Key", value=False, active_color="#3B82F6")
+        pk_checkbox = ft.Checkbox(label="PK", value=False, active_color=ft.Colors.AMBER_600)
         
-        additional_controls = [pk_checkbox_table]
-        if table.lower().startswith('fact_'):
+        additional_controls = [pk_checkbox]
+        if is_fact:
             fk_dropdown = ft.Dropdown(
-                width=200, border_radius=8, bgcolor="#F9FAFB", border_color="#D1D5DB",
+                width=140, border_radius=8, bgcolor=ft.Colors.WHITE, border_color=ft.Colors.BLUE_GREY_100,
                 options=[ft.dropdown.Option(t) for t in tables.keys() if t.lower().startswith('dim_')],
-                label="Foreign Key"
+                label="FK to", text_size=12, height=45
             )
-            ref_column_dropdown = ft.Dropdown(
-                width=200, border_radius=8, bgcolor="#F9FAFB", border_color="#D1D5DB",
-                options=[ft.dropdown.Option(col) for col in df.columns] if df is not None else [],
-                label="Cột tham chiếu"
-            )
-            additional_controls.extend([fk_dropdown, ref_column_dropdown])
-            add_button = ft.ElevatedButton(
-                "➕ Add", bgcolor="#10B981", color="white", width=100,
-                style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), elevation=2),
-                on_click=lambda _, t=table, fd=table_field_dropdown, pk=pk_checkbox_table, fk=fk_dropdown, rc=ref_column_dropdown: (
-                    add_field(t, fd.value, page.session.get("tables"), page, pk.value, fk.value, rc.value) if fd.value else None
-                )
-            )
-        else:
-            add_button = ft.ElevatedButton(
-                "➕ Add", bgcolor="#10B981", color="white", width=100,
-                style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), elevation=2),
-                on_click=lambda _, t=table, fd=table_field_dropdown, pk=pk_checkbox_table: (
-                    add_field(t, fd.value, page.session.get("tables"), page, pk.value) if fd.value else None
-                )
-            )
-        
-        erd_layout.controls.append(
-            ft.Card(
-                content=ft.Container(
-                    content=ft.Column([
-                        ft.Row([ft.Text(f"📌 {table}", size=18, weight="bold", color="#3B82F6"),
-                                ft.IconButton(ft.icons.DELETE, icon_color="#EF4444", tooltip="Xóa bảng",
-                                              on_click=lambda _, t=table: delete_table(t, page.session.get("tables"), page, update_status, lambda: refresh_erd_tab(page, erd_layout, update_status)))]),
-                        ft.Divider(color="#E5E7EB"),
-                        column_display if cols else ft.Text("Chưa có cột", italic=True, color="#6B7280"),
-                        ft.Row([table_field_dropdown] + additional_controls, spacing=10),
-                        ft.Row([add_button], alignment=ft.MainAxisAlignment.END)
-                    ], spacing=10),
-                    padding=15, bgcolor="#FFFFFF", border_radius=10, border=ft.border.all(1, "#E5E7EB")
-                ),
-                elevation=5
+            additional_controls.append(fk_dropdown)
+
+        add_btn = ft.IconButton(
+            icon=ft.Icons.ADD_CIRCLE_ROUNDED,
+            icon_color=ft.Colors.GREEN_600,
+            on_click=lambda _, t=table, fd=table_field_dropdown, pk=pk_checkbox, fk=fk_dropdown if is_fact else None: (
+                add_field(t, fd.value, page.session.get("tables"), page, pk.value, fk.value if is_fact else None) if fd.value else None
             )
         )
+
+        table_card = ft.Container(
+            content=ft.Column([
+                # Header
+                ft.Container(
+                    content=ft.Row([
+                        ft.Row([
+                            ft.Icon(ft.Icons.TABLE_CHART_ROUNDED, color=header_color, size=20),
+                            ft.Text(table, size=16, weight=ft.FontWeight.BOLD, color=header_color),
+                        ], spacing=10),
+                        ft.IconButton(ft.Icons.DELETE_OUTLINE_ROUNDED, icon_color=ft.Colors.RED_400, icon_size=18,
+                                    on_click=lambda _, t=table: delete_table(t, page.session.get("tables"), page, update_status, lambda: refresh_erd_tab(page, erd_layout, update_status)))
+                    ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
+                    padding=12,
+                    bgcolor=header_bg,
+                    border_radius=ft.border_radius.only(top_left=12, top_right=12)
+                ),
+                # Body
+                ft.Container(
+                    content=ft.Column([
+                        column_display if cols else ft.Text("Chưa có cột nào", size=13, italic=True, color=ft.Colors.BLUE_GREY_300),
+                        ft.Divider(height=20, color=ft.Colors.BLUE_GREY_50),
+                        ft.Row([table_field_dropdown] + additional_controls + [add_btn], spacing=10, vertical_alignment=ft.CrossAxisAlignment.CENTER),
+                    ], spacing=10),
+                    padding=15
+                )
+            ], spacing=0),
+            bgcolor=ft.Colors.WHITE,
+            border_radius=12,
+            border=ft.border.all(1, ft.Colors.BLUE_GREY_100),
+            shadow=ft.BoxShadow(blur_radius=10, spread_radius=1, color=ft.Colors.with_opacity(0.05, "black")),
+        )
+        
+        erd_layout.controls.append(table_card)
+    
     page.update()
+
 
 def delete_table(table_name, tables, page, update_status, refresh_callback):
     if table_name in tables:
@@ -167,7 +203,7 @@ def suggest_erd(page, update_status, erd_layout):
                 ], spacing=10),
                 bgcolor="#FFFFFF", border_radius=10, padding=20
             ),
-            bgcolor=ft.colors.TRANSPARENT,
+            bgcolor=ft.Colors.TRANSPARENT,
             modal=True
         )
         
