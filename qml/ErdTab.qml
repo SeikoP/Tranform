@@ -23,10 +23,10 @@ Item {
         anchors.fill: parent
         spacing: 0
 
-        // Left Settings Panel
+        // Left Settings Panel - Compact
         Rectangle {
             Layout.fillHeight: true
-            Layout.preferredWidth: 360
+            Layout.preferredWidth: 260
             color: "#1E293B"
             opacity: 0.95
             border.color: "#334155"
@@ -42,15 +42,15 @@ Item {
 
             ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: 25
-                spacing: 15
+                anchors.margins: 15
+                spacing: 10
 
                 RowLayout {
-                    spacing: 10
+                    spacing: 8
                     
                     Rectangle {
-                        width: 4
-                        height: 28
+                        width: 3
+                        height: 20
                         radius: 2
                         gradient: Gradient {
                             GradientStop { position: 0.0; color: "#3B82F6" }
@@ -59,8 +59,8 @@ Item {
                     }
                     
                     Text {
-                        text: "Thiết kế Mô hình"
-                        font.pixelSize: 22
+                        text: "Thiết kế ERD"
+                        font.pixelSize: 16
                         font.weight: Font.Bold
                         font.family: "Segoe UI"
                         color: "white"
@@ -68,36 +68,31 @@ Item {
                 }
 
                 Text {
-                    text: "Xác định các bảng và mối quan hệ để chuẩn hóa dữ liệu lên 3NF."
-                    font.pixelSize: 14
+                    text: "Xác định bảng và mối quan hệ"
+                    font.pixelSize: 11
                     font.family: "Segoe UI"
                     color: "#94A3B8"
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
-                    lineHeight: 1.4
+                    lineHeight: 1.3
                 }
 
                 Rectangle {
                     Layout.fillWidth: true
                     height: 1
-                    gradient: Gradient {
-                        orientation: Gradient.Horizontal
-                        GradientStop { position: 0.0; color: "transparent" }
-                        GradientStop { position: 0.5; color: "#334155" }
-                        GradientStop { position: 1.0; color: "transparent" }
-                    }
+                    color: "#334155"
                 }
 
                 TextField {
                     id: tableNameInput
-                    placeholderText: "VD: Dim_Customer"
+                    placeholderText: "Tên bảng..."
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 50
-                    font.pixelSize: 14
+                    Layout.preferredHeight: 38
+                    font.pixelSize: 12
                     color: "white"
                     
                     background: Rectangle {
-                        radius: 12
+                        radius: 8
                         color: "#0F172A"
                         border.color: tableNameInput.activeFocus ? "#3B82F6" : "#334155"
                         border.width: 2
@@ -110,10 +105,10 @@ Item {
 
                 Button {
                     id: createTableBtn
-                    text: "Tạo Bảng Mới"
+                    text: "Tạo Bảng"
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 50
-                    font.pixelSize: 15
+                    Layout.preferredHeight: 38
+                    font.pixelSize: 12
                     font.weight: Font.DemiBold
                     
                     onClicked: {
@@ -126,16 +121,8 @@ Item {
                             GradientStop { position: 0.0; color: createTableBtn.hovered ? "#2563EB" : "#3B82F6" }
                             GradientStop { position: 1.0; color: createTableBtn.hovered ? "#1E40AF" : "#2563EB" }
                         }
-                        radius: 12
+                        radius: 8
                         scale: createTableBtn.pressed ? 0.95 : 1.0
-                        
-                        layer.enabled: createTableBtn.hovered
-                        layer.effect: MultiEffect {
-                            shadowEnabled: true
-                            shadowColor: "#3B82F6"
-                            shadowOpacity: 0.6
-                            shadowBlur: 20
-                        }
                         
                         Behavior on scale {
                             NumberAnimation { duration: 100 }
@@ -151,23 +138,28 @@ Item {
                     }
                 }
 
-                Item { Layout.preferredHeight: 15 }
+                Rectangle {
+                    Layout.fillWidth: true
+                    height: 1
+                    color: "#334155"
+                    Layout.topMargin: 5
+                }
 
                 Text {
-                    text: "TỰ ĐỘNG HÓA"
-                    font.pixelSize: 12
+                    text: "TỰ ĐỘNG"
+                    font.pixelSize: 10
                     font.weight: Font.Bold
                     font.family: "Segoe UI"
                     color: "#60A5FA"
-                    font.letterSpacing: 1.5
+                    font.letterSpacing: 1.2
                 }
 
                 Button {
                     id: aiBtn
-                    text: "Đề xuất ERD (AI)"
+                    text: "Đề xuất ERD"
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 50
-                    font.pixelSize: 15
+                    Layout.preferredHeight: 38
+                    font.pixelSize: 12
                     font.weight: Font.DemiBold
                     
                     onClicked: bridge.suggest_erd()
@@ -177,16 +169,8 @@ Item {
                             GradientStop { position: 0.0; color: aiBtn.hovered ? "#7C3AED" : "#9333EA" }
                             GradientStop { position: 1.0; color: aiBtn.hovered ? "#6D28D9" : "#7C3AED" }
                         }
-                        radius: 12
+                        radius: 8
                         scale: aiBtn.pressed ? 0.95 : 1.0
-                        
-                        layer.enabled: aiBtn.hovered
-                        layer.effect: MultiEffect {
-                            shadowEnabled: true
-                            shadowColor: "#9333EA"
-                            shadowOpacity: 0.6
-                            shadowBlur: 20
-                        }
                         
                         Behavior on scale {
                             NumberAnimation { duration: 100 }
@@ -212,21 +196,104 @@ Item {
             Layout.fillWidth: true
             color: "transparent"
             
+            // Info text overlay - compact
+            Rectangle {
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.margins: 15
+                width: 160
+                height: 50
+                radius: 6
+                color: "#1E293B"
+                opacity: 0.9
+                visible: tableRepeater.count > 0
+                
+                ColumnLayout {
+                    anchors.centerIn: parent
+                    spacing: 2
+                    
+                    Text {
+                        text: "💡 Mẹo"
+                        font.pixelSize: 11
+                        font.weight: Font.Bold
+                        font.family: "Microsoft YaHei UI"
+                        color: "#60A5FA"
+                        Layout.alignment: Qt.AlignHCenter
+                    }
+                    
+                    Text {
+                        text: "Kéo thả để sắp xếp"
+                        font.pixelSize: 10
+                        font.family: "Microsoft YaHei UI"
+                        color: "#94A3B8"
+                        Layout.alignment: Qt.AlignHCenter
+                    }
+                }
+            }
+            
+            // Grid background
+            Canvas {
+                id: gridCanvas
+                anchors.fill: parent
+                
+                onPaint: {
+                    var ctx = getContext("2d")
+                    ctx.clearRect(0, 0, width, height)
+                    
+                    // Draw grid
+                    ctx.strokeStyle = "#E0E0E0"
+                    ctx.lineWidth = 0.5
+                    
+                    var gridSize = 20
+                    
+                    // Vertical lines
+                    for (var x = 0; x < width; x += gridSize) {
+                        ctx.beginPath()
+                        ctx.moveTo(x, 0)
+                        ctx.lineTo(x, height)
+                        ctx.stroke()
+                    }
+                    
+                    // Horizontal lines
+                    for (var y = 0; y < height; y += gridSize) {
+                        ctx.beginPath()
+                        ctx.moveTo(0, y)
+                        ctx.lineTo(width, y)
+                        ctx.stroke()
+                    }
+                }
+                
+                Component.onCompleted: requestPaint()
+            }
+            
             ScrollView {
                 anchors.fill: parent
                 clip: true
+                contentWidth: 2000
+                contentHeight: 2000
+                
+                ScrollBar.horizontal.policy: ScrollBar.AsNeeded
+                ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
-                Flow {
-                    id: erdFlow
-                    width: parent.width
-                    padding: 30
-                    spacing: 25
+                Item {
+                    id: erdCanvas
+                    width: 2000
+                    height: 2000
 
                     Repeater {
+                        id: tableRepeater
                         model: bridge ? Object.keys(bridge.tables) : []
                         delegate: TableCard {
                             tableName: modelData
                             columns: bridge ? bridge.tables[modelData] : []
+                            
+                            // Initial position with some spacing
+                            Component.onCompleted: {
+                                var col = index % 3
+                                var row = Math.floor(index / 3)
+                                x = 50 + col * 320
+                                y = 50 + row * 300
+                            }
                         }
                     }
                 }

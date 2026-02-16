@@ -126,6 +126,7 @@ Item {
                         model: bridge ? bridge.previewData : []
                         delegate: Row {
                             height: 36
+                            property var rowData: modelData
                             
                             Repeater {
                                 model: bridge ? bridge.columnNames : []
@@ -143,7 +144,7 @@ Item {
                                     Text {
                                         anchors.centerIn: parent
                                         anchors.margins: 8
-                                        text: modelData ? parent.parent.modelData[modelData] : ""
+                                        text: parent.parent.rowData[modelData] !== undefined ? parent.parent.rowData[modelData] : ""
                                         color: "#666666"
                                         font.pixelSize: 11
                                         font.family: "Microsoft YaHei UI"

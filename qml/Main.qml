@@ -27,7 +27,7 @@ ApplicationWindow {
         Sidebar {
             id: sidebar
             Layout.fillHeight: true
-            Layout.preferredWidth: 200
+            Layout.preferredWidth: 140
         }
 
         // Main Content Area

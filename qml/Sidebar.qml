@@ -25,14 +25,14 @@ Rectangle {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 15
-        spacing: 12
+        anchors.margins: 10
+        spacing: 8
 
-        // Logo
+        // Logo - compact
         Text {
             text: "Transform 3NF"
             color: "#333333"
-            font.pixelSize: 16
+            font.pixelSize: 13
             font.weight: Font.Bold
             font.family: "Microsoft YaHei UI"
             Layout.alignment: Qt.AlignHCenter
@@ -48,8 +48,8 @@ Rectangle {
             id: openBtn
             text: "Import"
             Layout.fillWidth: true
-            Layout.preferredHeight: 36
-            font.pixelSize: 12
+            Layout.preferredHeight: 32
+            font.pixelSize: 11
             font.family: "Microsoft YaHei UI"
             onClicked: importDialog.open()
             
@@ -71,8 +71,8 @@ Rectangle {
             id: exportBtn
             text: "Export"
             Layout.fillWidth: true
-            Layout.preferredHeight: 36
-            font.pixelSize: 12
+            Layout.preferredHeight: 32
+            font.pixelSize: 11
             font.family: "Microsoft YaHei UI"
             onClicked: exportDialog.open()
             
@@ -95,7 +95,7 @@ Rectangle {
         Text {
             text: "v3.0"
             color: "#999999"
-            font.pixelSize: 10
+            font.pixelSize: 9
             font.family: "Microsoft YaHei UI"
             Layout.alignment: Qt.AlignHCenter
         }

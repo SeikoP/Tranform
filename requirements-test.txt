@@ -1,0 +1,28 @@
+# Test dependencies for comprehensive system upgrade
+# Install with: pip install -r requirements-test.txt
+
+# Core testing framework
+pytest>=8.0.0
+pytest-qt>=4.3.0
+pytest-cov>=4.1.0
+pytest-xdist>=3.5.0  # For parallel test execution
+
+# Property-based testing
+hypothesis>=6.98.0
+
+# System monitoring
+psutil>=5.9.8
+
+# Additional testing utilities
+pytest-timeout>=2.2.0  # For test timeouts
+pytest-mock>=3.12.0    # For mocking support
+pytest-benchmark>=4.0.0  # For performance benchmarks
+
+# Code quality
+coverage>=7.4.0
+
+# For testing async operations
+pytest-asyncio>=0.23.0
+
+# For better test output
+pytest-sugar>=1.0.0  # Optional: prettier test output
