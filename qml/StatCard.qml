@@ -1,23 +1,25 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Effects
 
 Rectangle {
     id: root
     property string title: ""
     property var value: 0
     property string icon: ""
-    property color statColor: "blue"
+    property color statColor: Theme.primaryColor
 
-    color: "white"
-    radius: 4
-    border.color: "#E0E0E0"
+    color: Theme.backgroundPrimary
+    radius: Theme.radiusMedium
+    border.color: Theme.borderColor
     border.width: 1
     
-    // Hover effect
+    Behavior on color {
+        ColorAnimation { duration: Theme.animationDuration }
+    }
+    
     scale: mouseArea.containsMouse ? 1.02 : 1.0
     Behavior on scale {
-        NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
+        NumberAnimation { duration: Theme.animationDuration }
     }
     
     MouseArea {
@@ -28,22 +30,22 @@ Rectangle {
 
     RowLayout {
         anchors.fill: parent
-        anchors.margins: 15
-        spacing: 12
+        anchors.margins: 12
+        spacing: 10
 
         Rectangle {
-            width: 40
-            height: 40
-            radius: 4
+            width: 36
+            height: 36
+            radius: Theme.radiusMedium
             color: statColor
             opacity: 0.15
             
             Text {
                 anchors.centerIn: parent
                 text: icon
-                font.pixelSize: 11
+                font.pixelSize: Theme.fontSizeSmall
                 font.weight: Font.Bold
-                font.family: "Microsoft YaHei UI"
+                font.family: Theme.fontFamily
                 color: statColor
             }
         }
@@ -54,16 +56,16 @@ Rectangle {
             
             Text {
                 text: title
-                color: "#999999"
-                font.pixelSize: 11
-                font.family: "Microsoft YaHei UI"
+                color: Theme.textSecondary
+                font.pixelSize: Theme.fontSizeSmall
+                font.family: Theme.fontFamily
             }
             Text {
                 text: value.toLocaleString()
-                color: "#333333"
-                font.pixelSize: 20
+                color: Theme.textPrimary
+                font.pixelSize: 18
                 font.weight: Font.Bold
-                font.family: "Microsoft YaHei UI"
+                font.family: Theme.fontFamily
             }
         }
     }

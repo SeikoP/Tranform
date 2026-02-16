@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
 import QtQuick.Effects
+import "."
 
 ApplicationWindow {
     visible: true
@@ -11,12 +12,12 @@ ApplicationWindow {
     minimumWidth: 900
     minimumHeight: 600
     title: "Transform 3NF"
-    color: "#FFFFFF"
+    color: Theme.backgroundColor
     
     // Clean flat background
     Rectangle {
         anchors.fill: parent
-        color: "#FFFFFF"
+        color: Theme.backgroundColor
     }
 
     RowLayout {
@@ -40,13 +41,13 @@ ApplicationWindow {
             Rectangle {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 36
-                color: "#FAFAFA"
+                color: Theme.surfaceColor
                 
                 Rectangle {
                     anchors.bottom: parent.bottom
                     width: parent.width
                     height: 1
-                    color: "#E0E0E0"
+                    color: Theme.borderColor
                 }
                 
                 TabBar {
@@ -58,12 +59,12 @@ ApplicationWindow {
                     TabButton { 
                         text: "Dữ liệu"
                         font.pixelSize: 12
-                        font.family: "Segoe UI"
+                        font.family: Theme.fontFamily
                         
                         contentItem: Text {
                             text: parent.text
                             font: parent.font
-                            color: parent.checked ? "#1976D2" : "#757575"
+                            color: parent.checked ? Theme.primaryColor : Theme.textSecondary
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -75,7 +76,7 @@ ApplicationWindow {
                                 anchors.bottom: parent.bottom
                                 width: parent.width
                                 height: 2
-                                color: "#1976D2"
+                                color: Theme.primaryColor
                                 visible: parent.parent.checked
                             }
                         }
@@ -84,12 +85,12 @@ ApplicationWindow {
                     TabButton { 
                         text: "ETL"
                         font.pixelSize: 12
-                        font.family: "Segoe UI"
+                        font.family: Theme.fontFamily
                         
                         contentItem: Text {
                             text: parent.text
                             font: parent.font
-                            color: parent.checked ? "#1976D2" : "#757575"
+                            color: parent.checked ? Theme.primaryColor : Theme.textSecondary
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -101,7 +102,7 @@ ApplicationWindow {
                                 anchors.bottom: parent.bottom
                                 width: parent.width
                                 height: 2
-                                color: "#1976D2"
+                                color: Theme.primaryColor
                                 visible: parent.parent.checked
                             }
                         }
@@ -110,12 +111,12 @@ ApplicationWindow {
                     TabButton { 
                         text: "Mô hình ERD"
                         font.pixelSize: 12
-                        font.family: "Segoe UI"
+                        font.family: Theme.fontFamily
                         
                         contentItem: Text {
                             text: parent.text
                             font: parent.font
-                            color: parent.checked ? "#1976D2" : "#757575"
+                            color: parent.checked ? Theme.primaryColor : Theme.textSecondary
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -127,7 +128,7 @@ ApplicationWindow {
                                 anchors.bottom: parent.bottom
                                 width: parent.width
                                 height: 2
-                                color: "#1976D2"
+                                color: Theme.primaryColor
                                 visible: parent.parent.checked
                             }
                         }
@@ -158,13 +159,13 @@ ApplicationWindow {
             Rectangle {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 24
-                color: "#FAFAFA"
+                color: Theme.surfaceColor
                 
                 Rectangle {
                     anchors.top: parent.top
                     width: parent.width
                     height: 1
-                    color: "#E0E0E0"
+                    color: Theme.borderColor
                 }
                 
                 RowLayout {
@@ -184,8 +185,8 @@ ApplicationWindow {
                         id: statusText
                         text: "Sẵn sàng"
                         font.pixelSize: 11
-                        font.family: "Segoe UI"
-                        color: "#4CAF50"
+                        font.family: Theme.fontFamily
+                        color: Theme.successColor
                     }
                     
                     Item { Layout.fillWidth: true }
@@ -193,8 +194,8 @@ ApplicationWindow {
                     Text {
                         text: "v3.0"
                         font.pixelSize: 10
-                        font.family: "Segoe UI"
-                        color: "#9E9E9E"
+                        font.family: Theme.fontFamily
+                        color: Theme.textSecondary
                     }
                 }
                 
@@ -202,9 +203,9 @@ ApplicationWindow {
                     target: bridge
                     function onStatusChanged(message, color) {
                         statusText.text = message
-                        if (color === "red") statusText.color = "#F44336"
-                        else if (color === "green") statusText.color = "#4CAF50"
-                        else statusText.color = "#2196F3"
+                        if (color === "red") statusText.color = Theme.errorColor
+                        else if (color === "green") statusText.color = Theme.successColor
+                        else statusText.color = Theme.primaryColor
                     }
                 }
             }

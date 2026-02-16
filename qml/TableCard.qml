@@ -8,12 +8,12 @@ Rectangle {
     property string tableName: ""
     property list<var> columns: []
 
-    width: 240
-    height: Math.max(130, 50 + columns.length * 26 + 80)
-    radius: 4
-    color: "#FFFFFF"
-    border.color: dragArea.drag.active ? "#1976D2" : "#E0E0E0"
-    border.width: dragArea.drag.active ? 2 : 1
+    width: Theme.tableCardWidth
+    height: Math.max(130, Theme.tableCardHeaderHeight + 14 + columns.length * (Theme.tableCardRowHeight + 2) + 80)
+    radius: Theme.radiusMedium
+    color: Theme.cardBackground
+    border.color: dragArea.drag.active ? Theme.primaryColor : Theme.borderColor
+    border.width: dragArea.drag.active ? Theme.borderWidthMedium : Theme.borderWidthThin
     
     // Drag and drop properties
     x: 0
@@ -40,7 +40,7 @@ Rectangle {
     layer.enabled: dragArea.drag.active
     layer.effect: MultiEffect {
         shadowEnabled: true
-        shadowColor: "#1976D2"
+        shadowColor: Theme.primaryColor
         shadowOpacity: 0.3
         shadowBlur: 20
     }
@@ -87,9 +87,13 @@ Rectangle {
         // Header - compact
         Rectangle {
             Layout.fillWidth: true
-            height: 36
-            radius: 4
-            color: tableName.toLowerCase().startsWith("fact") ? "#E8F5E9" : "#E3F2FD"
+            height: Theme.tableCardHeaderHeight
+            radius: Theme.radiusMedium
+            color: tableName.toLowerCase().startsWith("fact") ? Theme.factTableBg : Theme.dimTableBg
+            
+            Behavior on color {
+                ColorAnimation { duration: Theme.animationDuration }
+            }
             
             // Only top corners rounded
             Rectangle {
@@ -101,15 +105,15 @@ Rectangle {
 
             RowLayout {
                 anchors.fill: parent
-                anchors.leftMargin: 10
-                anchors.rightMargin: 10
-                spacing: 6
+                anchors.leftMargin: Theme.paddingMedium
+                anchors.rightMargin: Theme.paddingMedium
+                spacing: Theme.spacingSmall
                 
                 Rectangle {
-                    width: 20
-                    height: 20
-                    radius: 3
-                    color: tableName.toLowerCase().startsWith("fact") ? "#4CAF50" : "#1976D2"
+                    width: Theme.iconSizeMedium
+                    height: Theme.iconSizeMedium
+                    radius: Theme.radiusSmall
+                    color: tableName.toLowerCase().startsWith("fact") ? Theme.successColor : Theme.primaryColor
                     opacity: 0.2
                     
                     Text {
@@ -117,17 +121,17 @@ Rectangle {
                         text: tableName.toLowerCase().startsWith("fact") ? "F" : "D"
                         font.pixelSize: 11
                         font.weight: Font.Bold
-                        font.family: "Segoe UI"
-                        color: tableName.toLowerCase().startsWith("fact") ? "#4CAF50" : "#1976D2"
+                        font.family: Theme.fontFamily
+                        color: tableName.toLowerCase().startsWith("fact") ? Theme.successColor : Theme.primaryColor
                     }
                 }
                 
                 Text {
                     text: tableName
-                    font.pixelSize: 12
+                    font.pixelSize: Theme.fontSizeLarge
                     font.weight: Font.DemiBold
-                    font.family: "Segoe UI"
-                    color: "#212121"
+                    font.family: Theme.fontFamily
+                    color: Theme.textPrimary
                     Layout.fillWidth: true
                     elide: Text.ElideRight
                 }
@@ -136,16 +140,44 @@ Rectangle {
                     width: 32
                     height: 16
                     radius: 2
-                    color: tableName.toLowerCase().startsWith("fact") ? "#4CAF50" : "#1976D2"
+                    color: tableName.toLowerCase().startsWith("fact") ? Theme.successColor : Theme.primaryColor
                     opacity: 0.15
                     
                     Text {
                         anchors.centerIn: parent
                         text: tableName.toLowerCase().startsWith("fact") ? "Fact" : "Dim"
-                        font.pixelSize: 8
+                        font.pixelSize: Theme.fontSizeTiny
                         font.weight: Font.Bold
-                        font.family: "Segoe UI"
-                        color: tableName.toLowerCase().startsWith("fact") ? "#4CAF50" : "#1976D2"
+                        font.family: Theme.fontFamily
+                        color: tableName.toLowerCase().startsWith("fact") ? Theme.successColor : Theme.primaryColor
+                    }
+                }
+                
+                // Delete table button
+                Button {
+                    visible: cardMouseArea.containsMouse
+                    width: 20
+                    height: 20
+                    text: "×"
+                    font.pixelSize: 16
+                    font.weight: Font.Bold
+                    font.family: Theme.fontFamily
+                    
+                    onClicked: {
+                        bridge.remove_table(tableName)
+                    }
+                    
+                    background: Rectangle {
+                        color: parent.hovered ? Theme.deleteButtonHover : "transparent"
+                        radius: Theme.radiusSmall
+                    }
+                    
+                    contentItem: Text {
+                        text: parent.text
+                        color: parent.hovered ? Theme.textOnPrimary : Theme.deleteButtonColor
+                        font: parent.font
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
                     }
                 }
             }
@@ -154,8 +186,8 @@ Rectangle {
         // Body - Columns List - compact
         ColumnLayout {
             Layout.fillWidth: true
-            Layout.margins: 10
-            spacing: 4
+            Layout.margins: Theme.paddingMedium
+            spacing: Theme.spacingXSmall
 
             Repeater {
                 model: columns
@@ -163,12 +195,12 @@ Rectangle {
                     Layout.fillWidth: true
                     height: 24
                     radius: 2
-                    color: columnMouseArea.containsMouse ? "#F5F5F5" : "transparent"
-                    border.color: modelData.is_primary ? "#FF9800" : "transparent"
+                    color: columnMouseArea.containsMouse ? Theme.backgroundHover : "transparent"
+                    border.color: modelData.is_primary ? Theme.warningColor : "transparent"
                     border.width: modelData.is_primary ? 1 : 0
                     
                     Behavior on color {
-                        ColorAnimation { duration: 100 }
+                        ColorAnimation { duration: Theme.animationDuration }
                     }
                     
                     MouseArea {
@@ -179,15 +211,15 @@ Rectangle {
                     
                     RowLayout {
                         anchors.fill: parent
-                        anchors.leftMargin: 6
-                        anchors.rightMargin: 6
-                        spacing: 5
+                        anchors.leftMargin: Theme.spacingSmall
+                        anchors.rightMargin: Theme.spacingSmall
+                        spacing: Theme.spacingSmall
                         
                         Rectangle {
-                            width: 16
-                            height: 16
-                            radius: 2
-                            color: modelData.is_primary ? "#FF9800" : (modelData.ref_table ? "#1976D2" : "#BDBDBD")
+                            width: Theme.iconSizeSmall
+                            height: Theme.iconSizeSmall
+                            radius: Theme.radiusSmall
+                            color: modelData.is_primary ? Theme.warningColor : (modelData.ref_table ? Theme.primaryColor : Theme.textDisabled)
                             opacity: 0.2
                             
                             Text {
@@ -195,27 +227,55 @@ Rectangle {
                                 text: modelData.is_primary ? "PK" : (modelData.ref_table ? "FK" : "")
                                 font.pixelSize: 7
                                 font.weight: Font.Bold
-                                font.family: "Segoe UI"
-                                color: modelData.is_primary ? "#FF9800" : (modelData.ref_table ? "#1976D2" : "#BDBDBD")
+                                font.family: Theme.fontFamily
+                                color: modelData.is_primary ? Theme.warningColor : (modelData.ref_table ? Theme.primaryColor : Theme.textDisabled)
                             }
                         }
                         
                         Text {
                             text: modelData.name
-                            font.pixelSize: 10
+                            font.pixelSize: Theme.fontSizeSmall
                             font.weight: modelData.is_primary ? Font.DemiBold : Font.Normal
-                            font.family: "Segoe UI"
-                            color: "#212121"
+                            font.family: Theme.fontFamily
+                            color: Theme.textPrimary
                             Layout.fillWidth: true
                             elide: Text.ElideRight
                         }
                         
                         Text {
                             text: modelData.ref_table ? "→ " + modelData.ref_table : ""
-                            font.pixelSize: 9
-                            font.family: "Segoe UI"
-                            color: "#757575"
+                            font.pixelSize: Theme.fontSizeXSmall
+                            font.family: Theme.fontFamily
+                            color: Theme.textSecondary
                             visible: modelData.ref_table !== null
+                        }
+                        
+                        // Delete column button
+                        Button {
+                            visible: columnMouseArea.containsMouse
+                            width: 18
+                            height: 18
+                            text: "×"
+                            font.pixelSize: 14
+                            font.weight: Font.Bold
+                            font.family: Theme.fontFamily
+                            
+                            onClicked: {
+                                bridge.remove_field(tableName, modelData.name)
+                            }
+                            
+                            background: Rectangle {
+                                color: parent.hovered ? Theme.deleteButtonHover : "transparent"
+                                radius: Theme.radiusSmall
+                            }
+                            
+                            contentItem: Text {
+                                text: parent.text
+                                color: parent.hovered ? Theme.textOnPrimary : Theme.deleteButtonColor
+                                font: parent.font
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
                         }
                     }
                 }

@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtQuick.Effects
+import "."
 
 Dialog {
     id: importDialog
@@ -13,15 +14,15 @@ Dialog {
     anchors.centerIn: parent
     
     background: Rectangle {
-        color: "#1E293B"
+        color: Theme.darkMode ? "#1E293B" : Theme.surfaceColor
         radius: 16
-        border.color: "#3B82F6"
+        border.color: Theme.primaryColor
         border.width: 2
         
         layer.enabled: true
         layer.effect: MultiEffect {
             shadowEnabled: true
-            shadowColor: "#3B82F6"
+            shadowColor: Theme.primaryColor
             shadowOpacity: 0.4
             shadowBlur: 30
         }
@@ -58,8 +59,8 @@ Dialog {
                 height: 50
                 radius: 12
                 gradient: Gradient {
-                    GradientStop { position: 0.0; color: "#3B82F6" }
-                    GradientStop { position: 1.0; color: "#8B5CF6" }
+                    GradientStop { position: 0.0; color: Theme.primaryColor }
+                    GradientStop { position: 1.0; color: Theme.primaryDark }
                 }
                 
                 Text {
@@ -67,7 +68,7 @@ Dialog {
                     text: "IN"
                     font.pixelSize: 16
                     font.weight: Font.Bold
-                    font.family: "Segoe UI"
+                    font.family: Theme.fontFamily
                     color: "white"
                 }
             }
@@ -78,14 +79,14 @@ Dialog {
                     text: "Import Dữ liệu"
                     font.pixelSize: 22
                     font.weight: Font.Bold
-                    font.family: "Segoe UI"
-                    color: "white"
+                    font.family: Theme.fontFamily
+                    color: Theme.darkMode ? "white" : Theme.textPrimary
                 }
                 Text {
                     text: "Chọn nguồn dữ liệu để import"
                     font.pixelSize: 13
-                    font.family: "Segoe UI"
-                    color: "#94A3B8"
+                    font.family: Theme.fontFamily
+                    color: Theme.textSecondary
                 }
             }
         }
@@ -109,7 +110,7 @@ Dialog {
                 text: "Loại nguồn dữ liệu:"
                 font.pixelSize: 14
                 font.weight: Font.Medium
-                color: "#E2E8F0"
+                color: Theme.darkMode ? "#E2E8F0" : Theme.textPrimary
             }
             
             ComboBox {
@@ -120,15 +121,15 @@ Dialog {
                 font.pixelSize: 14
                 
                 background: Rectangle {
-                    color: "#0F172A"
+                    color: Theme.darkMode ? "#0F172A" : Theme.backgroundColor
                     radius: 12
-                    border.color: sourceTypeCombo.activeFocus ? "#3B82F6" : "#334155"
+                    border.color: sourceTypeCombo.activeFocus ? Theme.primaryColor : Theme.borderColor
                     border.width: 2
                 }
                 
                 contentItem: Text {
                     text: sourceTypeCombo.displayText
-                    color: "#E2E8F0"
+                    color: Theme.darkMode ? "#E2E8F0" : Theme.textPrimary
                     font: sourceTypeCombo.font
                     verticalAlignment: Text.AlignVCenter
                     leftPadding: 15
@@ -151,7 +152,7 @@ Dialog {
                     Text {
                         text: "Chọn file CSV để import"
                         font.pixelSize: 13
-                        color: "#94A3B8"
+                        color: Theme.textSecondary
                     }
                     
                     Button {
@@ -165,8 +166,8 @@ Dialog {
                         
                         background: Rectangle {
                             gradient: Gradient {
-                                GradientStop { position: 0.0; color: parent.hovered ? "#2563EB" : "#3B82F6" }
-                                GradientStop { position: 1.0; color: parent.hovered ? "#1E40AF" : "#2563EB" }
+                                GradientStop { position: 0.0; color: parent.hovered ? Theme.primaryDark : Theme.primaryColor }
+                                GradientStop { position: 1.0; color: parent.hovered ? Theme.primaryDark : Theme.primaryLight }
                             }
                             radius: 12
                         }
@@ -205,8 +206,8 @@ Dialog {
                         
                         background: Rectangle {
                             gradient: Gradient {
-                                GradientStop { position: 0.0; color: parent.hovered ? "#059669" : "#10B981" }
-                                GradientStop { position: 1.0; color: parent.hovered ? "#047857" : "#059669" }
+                                GradientStop { position: 0.0; color: parent.hovered ? Theme.successDark : Theme.successColor }
+                                GradientStop { position: 1.0; color: parent.hovered ? Theme.successDark : Theme.successColor }
                             }
                             radius: 12
                         }

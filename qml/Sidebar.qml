@@ -9,6 +9,10 @@ Rectangle {
     id: root
     color: Theme.backgroundPrimary
     
+    Behavior on color {
+        ColorAnimation { duration: Theme.animationDuration }
+    }
+    
     Rectangle {
         anchors.right: parent.right
         width: 1
@@ -62,6 +66,17 @@ Rectangle {
         }
 
         Item { Layout.fillHeight: true }
+        
+        // Theme toggle
+        ThemeToggle {
+            Layout.alignment: Qt.AlignHCenter
+        }
+        
+        Rectangle {
+            Layout.fillWidth: true
+            height: 1
+            color: Theme.dividerColor
+        }
 
         Text {
             text: "v3.0"

@@ -119,6 +119,25 @@ class DataBridge(QObject):
             })
             self.erdChanged.emit()
             self.statusChanged.emit(f"✅ Đã thêm trường: {field_name}", "green")
+    
+    @Slot(str, str)
+    def remove_field(self, table_name, field_name):
+        """Remove a field from a table"""
+        if table_name in self._tables:
+            self._tables[table_name] = [
+                col for col in self._tables[table_name] 
+                if col['name'] != field_name
+            ]
+            self.erdChanged.emit()
+            self.statusChanged.emit(f"✅ Đã xóa trường: {field_name}", "green")
+    
+    @Slot(str)
+    def remove_table(self, table_name):
+        """Remove a table"""
+        if table_name in self._tables:
+            del self._tables[table_name]
+            self.erdChanged.emit()
+            self.statusChanged.emit(f"✅ Đã xóa bảng: {table_name}", "green")
 
     @Property(list, notify=dataChanged)
     def savedConnections(self):

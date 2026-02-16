@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Effects
+import "."
 
 Item {
     id: root
@@ -33,7 +34,7 @@ Item {
                 title: "Số bản ghi"
                 value: bridge ? bridge.stats.records : 0
                 icon: "REC"
-                statColor: "#2196F3"
+                statColor: Theme.primaryColor
                 Layout.fillWidth: true
                 Layout.preferredHeight: 80
             }
@@ -41,7 +42,7 @@ Item {
                 title: "Số cột"
                 value: bridge ? bridge.stats.columns : 0
                 icon: "COL"
-                statColor: "#9C27B0"
+                statColor: Theme.primaryLight
                 Layout.fillWidth: true
                 Layout.preferredHeight: 80
             }
@@ -49,7 +50,7 @@ Item {
                 title: "Dim Candidates"
                 value: bridge ? bridge.stats.dim : 0
                 icon: "DIM"
-                statColor: "#FF9800"
+                statColor: Theme.warningColor
                 Layout.fillWidth: true
                 Layout.preferredHeight: 80
             }
@@ -57,7 +58,7 @@ Item {
                 title: "Fact Candidates"
                 value: bridge ? bridge.stats.fact : 0
                 icon: "FCT"
-                statColor: "#009688"
+                statColor: Theme.successColor
                 Layout.fillWidth: true
                 Layout.preferredHeight: 80
             }
@@ -68,17 +69,17 @@ Item {
             text: "Xem trước dữ liệu (15 dòng đầu)"
             font.pixelSize: 14
             font.weight: Font.DemiBold
-            font.family: "Microsoft YaHei UI"
-            color: "#333333"
+            font.family: Theme.fontFamily
+            color: Theme.textPrimary
         }
 
         // Data Table Container
         Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            color: "white"
+            color: Theme.surfaceColor
             radius: 4
-            border.color: "#E0E0E0"
+            border.color: Theme.borderColor
             border.width: 1
             clip: true
 
@@ -101,8 +102,8 @@ Item {
                             delegate: Rectangle {
                                 width: 150
                                 height: 40
-                                color: "#FAFAFA"
-                                border.color: "#E0E0E0"
+                                color: Theme.backgroundHover
+                                border.color: Theme.borderColor
                                 border.width: 1
                                 
                                 Text {
@@ -111,8 +112,8 @@ Item {
                                     text: modelData
                                     font.pixelSize: 12
                                     font.weight: Font.DemiBold
-                                    font.family: "Microsoft YaHei UI"
-                                    color: "#333333"
+                                    font.family: Theme.fontFamily
+                                    color: Theme.textPrimary
                                     elide: Text.ElideRight
                                     width: parent.width - 16
                                     horizontalAlignment: Text.AlignHCenter
@@ -133,8 +134,8 @@ Item {
                                 delegate: Rectangle {
                                     width: 150
                                     height: 36
-                                    color: rowMouseArea.containsMouse ? "#F5F5F5" : "white"
-                                    border.color: "#E0E0E0"
+                                    color: rowMouseArea.containsMouse ? Theme.backgroundHover : Theme.surfaceColor
+                                    border.color: Theme.borderColor
                                     border.width: 1
                                     
                                     Behavior on color {
@@ -145,9 +146,9 @@ Item {
                                         anchors.centerIn: parent
                                         anchors.margins: 8
                                         text: parent.parent.rowData[modelData] !== undefined ? parent.parent.rowData[modelData] : ""
-                                        color: "#666666"
+                                        color: Theme.textSecondary
                                         font.pixelSize: 11
-                                        font.family: "Microsoft YaHei UI"
+                                        font.family: Theme.fontFamily
                                         elide: Text.ElideRight
                                         width: parent.width - 16
                                         horizontalAlignment: Text.AlignHCenter

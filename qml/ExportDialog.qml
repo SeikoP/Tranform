@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtQuick.Effects
+import "."
 
 Dialog {
     id: exportDialog
@@ -13,15 +14,15 @@ Dialog {
     anchors.centerIn: parent
     
     background: Rectangle {
-        color: "#1E293B"
+        color: Theme.darkMode ? "#1E293B" : Theme.surfaceColor
         radius: 16
-        border.color: "#10B981"
+        border.color: Theme.successColor
         border.width: 2
         
         layer.enabled: true
         layer.effect: MultiEffect {
             shadowEnabled: true
-            shadowColor: "#10B981"
+            shadowColor: Theme.successColor
             shadowOpacity: 0.4
             shadowBlur: 30
         }
@@ -63,8 +64,8 @@ Dialog {
                 height: 50
                 radius: 12
                 gradient: Gradient {
-                    GradientStop { position: 0.0; color: "#10B981" }
-                    GradientStop { position: 1.0; color: "#059669" }
+                    GradientStop { position: 0.0; color: Theme.successColor }
+                    GradientStop { position: 1.0; color: Theme.successDark }
                 }
                 
                 Text {
@@ -72,7 +73,7 @@ Dialog {
                     text: "OUT"
                     font.pixelSize: 14
                     font.weight: Font.Bold
-                    font.family: "Segoe UI"
+                    font.family: Theme.fontFamily
                     color: "white"
                 }
             }
@@ -83,12 +84,12 @@ Dialog {
                     text: "Export Dữ liệu"
                     font.pixelSize: 22
                     font.weight: Font.Bold
-                    color: "white"
+                    color: Theme.darkMode ? "white" : Theme.textPrimary
                 }
                 Text {
                     text: "Xuất dữ liệu đã chuẩn hóa"
                     font.pixelSize: 13
-                    color: "#94A3B8"
+                    color: Theme.textSecondary
                 }
             }
         }
@@ -112,7 +113,7 @@ Dialog {
                 text: "Định dạng xuất:"
                 font.pixelSize: 14
                 font.weight: Font.Medium
-                color: "#E2E8F0"
+                color: Theme.darkMode ? "#E2E8F0" : Theme.textPrimary
             }
             
             ComboBox {
@@ -129,15 +130,15 @@ Dialog {
                 font.pixelSize: 14
                 
                 background: Rectangle {
-                    color: "#0F172A"
+                    color: Theme.darkMode ? "#0F172A" : Theme.backgroundColor
                     radius: 12
-                    border.color: exportTypeCombo.activeFocus ? "#10B981" : "#334155"
+                    border.color: exportTypeCombo.activeFocus ? Theme.successColor : Theme.borderColor
                     border.width: 2
                 }
                 
                 contentItem: Text {
                     text: exportTypeCombo.displayText
-                    color: "#E2E8F0"
+                    color: Theme.darkMode ? "#E2E8F0" : Theme.textPrimary
                     font: exportTypeCombo.font
                     verticalAlignment: Text.AlignVCenter
                     leftPadding: 15
@@ -251,15 +252,15 @@ Dialog {
                 
                 background: Rectangle {
                     gradient: Gradient {
-                        GradientStop { position: 0.0; color: parent.hovered ? "#059669" : "#10B981" }
-                        GradientStop { position: 1.0; color: parent.hovered ? "#047857" : "#059669" }
+                        GradientStop { position: 0.0; color: parent.hovered ? Theme.successDark : Theme.successColor }
+                        GradientStop { position: 1.0; color: parent.hovered ? Theme.successDark : Theme.successColor }
                     }
                     radius: 12
                     
                     layer.enabled: parent.hovered
                     layer.effect: MultiEffect {
                         shadowEnabled: true
-                        shadowColor: "#10B981"
+                        shadowColor: Theme.successColor
                         shadowOpacity: 0.6
                         shadowBlur: 20
                     }

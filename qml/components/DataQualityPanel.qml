@@ -2,45 +2,46 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Effects
+import ".."
 
 Item {
     id: root
     
     ScrollView {
         anchors.fill: parent
-        anchors.margins: 30
+        anchors.margins: Theme.paddingXXXLarge
         clip: true
         
         ColumnLayout {
             width: parent.width
-            spacing: 25
+            spacing: Theme.spacingXXLarge
             
             // Header
             Text {
                 text: "📊 Data Quality Analysis"
                 font.pixelSize: 20
                 font.weight: Font.Bold
-                color: "white"
+                color: Theme.darkMode ? "white" : Theme.textPrimary
             }
             
             // Summary Cards
             RowLayout {
                 Layout.fillWidth: true
-                spacing: 20
+                spacing: Theme.spacingXLarge
                 
                 Rectangle {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 100
-                    color: "#1E293B"
+                    color: Theme.dialogBackground
                     opacity: 0.9
-                    radius: 12
-                    border.color: "#3B82F6"
-                    border.width: 1
+                    radius: Theme.radiusXLarge
+                    border.color: Theme.primaryColor
+                    border.width: Theme.borderWidthThin
                     
                     RowLayout {
                         anchors.fill: parent
-                        anchors.margins: 20
-                        spacing: 15
+                        anchors.margins: Theme.paddingXLarge
+                        spacing: Theme.paddingLarge
                         
                         Text {
                             text: "📊"
@@ -53,7 +54,7 @@ Item {
                             Text {
                                 text: "Total Rows"
                                 font.pixelSize: 12
-                                color: "#94A3B8"
+                                color: Theme.textSecondary
                             }
                             
                             Text {
@@ -61,7 +62,7 @@ Item {
                                       bridge.dataQualityProfile.profile.total_rows.toLocaleString() : "0"
                                 font.pixelSize: 24
                                 font.weight: Font.Bold
-                                color: "white"
+                                color: Theme.darkMode ? "white" : Theme.textPrimary
                             }
                         }
                     }
@@ -70,16 +71,16 @@ Item {
                 Rectangle {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 100
-                    color: "#1E293B"
+                    color: Theme.dialogBackground
                     opacity: 0.9
-                    radius: 12
-                    border.color: "#10B981"
-                    border.width: 1
+                    radius: Theme.radiusXLarge
+                    border.color: Theme.successColor
+                    border.width: Theme.borderWidthThin
                     
                     RowLayout {
                         anchors.fill: parent
-                        anchors.margins: 20
-                        spacing: 15
+                        anchors.margins: Theme.paddingXLarge
+                        spacing: Theme.paddingLarge
                         
                         Text {
                             text: "📋"
@@ -92,7 +93,7 @@ Item {
                             Text {
                                 text: "Total Columns"
                                 font.pixelSize: 12
-                                color: "#94A3B8"
+                                color: Theme.textSecondary
                             }
                             
                             Text {
@@ -100,7 +101,7 @@ Item {
                                       bridge.dataQualityProfile.profile.total_columns : "0"
                                 font.pixelSize: 24
                                 font.weight: Font.Bold
-                                color: "white"
+                                color: Theme.darkMode ? "white" : Theme.textPrimary
                             }
                         }
                     }
@@ -109,16 +110,16 @@ Item {
                 Rectangle {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 100
-                    color: "#1E293B"
+                    color: Theme.dialogBackground
                     opacity: 0.9
-                    radius: 12
-                    border.color: "#F59E0B"
-                    border.width: 1
+                    radius: Theme.radiusXLarge
+                    border.color: Theme.warningColor
+                    border.width: Theme.borderWidthThin
                     
                     RowLayout {
                         anchors.fill: parent
-                        anchors.margins: 20
-                        spacing: 15
+                        anchors.margins: Theme.paddingXLarge
+                        spacing: Theme.paddingLarge
                         
                         Text {
                             text: "⚠️"
@@ -131,14 +132,14 @@ Item {
                             Text {
                                 text: "Issues Found"
                                 font.pixelSize: 12
-                                color: "#94A3B8"
+                                color: Theme.textSecondary
                             }
                             
                             Text {
                                 text: getTotalIssues()
                                 font.pixelSize: 24
                                 font.weight: Font.Bold
-                                color: "#F59E0B"
+                                color: Theme.warningColor
                             }
                         }
                     }
@@ -149,22 +150,22 @@ Item {
             Rectangle {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 300
-                color: "#1E293B"
+                color: Theme.dialogBackground
                 opacity: 0.9
-                radius: 12
-                border.color: "#334155"
-                border.width: 1
+                radius: Theme.radiusXLarge
+                border.color: Theme.borderColor
+                border.width: Theme.borderWidthThin
                 
                 ColumnLayout {
                     anchors.fill: parent
-                    anchors.margins: 20
-                    spacing: 15
+                    anchors.margins: Theme.paddingXLarge
+                    spacing: Theme.paddingLarge
                     
                     Text {
                         text: "⚠️ Detected Anomalies"
                         font.pixelSize: 16
                         font.weight: Font.Bold
-                        color: "white"
+                        color: Theme.darkMode ? "white" : Theme.textPrimary
                     }
                     
                     ScrollView {
@@ -174,7 +175,7 @@ Item {
                         
                         ColumnLayout {
                             width: parent.width
-                            spacing: 10
+                            spacing: Theme.paddingMedium
                             
                             Repeater {
                                 model: getAnomaliesList()
@@ -182,14 +183,14 @@ Item {
                                 delegate: Rectangle {
                                     Layout.fillWidth: true
                                     height: 40
-                                    color: "#0F172A"
-                                    radius: 8
+                                    color: Theme.dialogInputBackground
+                                    radius: Theme.radiusLarge
                                     
                                     RowLayout {
                                         anchors.fill: parent
-                                        anchors.leftMargin: 15
-                                        anchors.rightMargin: 15
-                                        spacing: 10
+                                        anchors.leftMargin: Theme.paddingLarge
+                                        anchors.rightMargin: Theme.paddingLarge
+                                        spacing: Theme.paddingMedium
                                         
                                         Text {
                                             text: getIssueIcon(modelData.type)
@@ -199,7 +200,7 @@ Item {
                                         Text {
                                             text: modelData.message
                                             font.pixelSize: 13
-                                            color: "#CBD5E1"
+                                            color: Theme.textSecondary
                                             Layout.fillWidth: true
                                         }
                                     }
@@ -214,7 +215,7 @@ Item {
                                 
                                 ColumnLayout {
                                     anchors.centerIn: parent
-                                    spacing: 10
+                                    spacing: Theme.paddingMedium
                                     
                                     Text {
                                         text: "✅"
@@ -225,7 +226,7 @@ Item {
                                     Text {
                                         text: "Không phát hiện vấn đề"
                                         font.pixelSize: 14
-                                        color: "#10B981"
+                                        color: Theme.successColor
                                         Layout.alignment: Qt.AlignHCenter
                                     }
                                 }

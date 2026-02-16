@@ -13,7 +13,7 @@ Item {
     NumberAnimation on opacity {
         id: fadeIn
         to: 1.0
-        duration: 600
+        duration: Theme.animationDuration * 4
         easing.type: Easing.OutQuad
     }
     
@@ -21,83 +21,58 @@ Item {
         anchors.fill: parent
         spacing: 0
         
-        // Left Panel - Pipeline Management
+        // Left Panel - Pipeline Management (Compact)
         Rectangle {
             Layout.fillHeight: true
-            Layout.preferredWidth: 360
-            color: "#1E293B"
-            opacity: 0.95
-            border.color: "#334155"
+            Layout.preferredWidth: 220
+            color: Theme.backgroundSecondary
+            border.color: Theme.borderColor
             border.width: 1
             
-            layer.enabled: true
-            layer.effect: MultiEffect {
-                shadowEnabled: true
-                shadowColor: "#000000"
-                shadowOpacity: 0.4
-                shadowBlur: 20
+            Behavior on color {
+                ColorAnimation { duration: Theme.animationDuration }
             }
             
             ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: 25
-                spacing: 15
+                anchors.margins: Theme.spacingXLarge
+                spacing: Theme.spacingMedium
                 
-                // Header
-                RowLayout {
-                    spacing: 10
-                    
-                    Rectangle {
-                        width: 4
-                        height: 28
-                        radius: 2
-                        gradient: Gradient {
-                            GradientStop { position: 0.0; color: "#10B981" }
-                            GradientStop { position: 1.0; color: "#059669" }
-                        }
-                    }
-                    
-                    Text {
-                        text: "ETL Pipeline"
-                        font.pixelSize: 22
-                        font.weight: Font.Bold
-                        font.family: "Segoe UI"
-                        color: "white"
-                    }
+                SectionHeader {
+                    title: "ETL Pipeline"
+                    accentColor: Theme.successColor
                 }
                 
                 Text {
                     text: "Extract → Transform → Load"
-                    font.pixelSize: 13
-                    color: "#94A3B8"
+                    font.pixelSize: Theme.fontSizeSmall
+                    font.family: Theme.fontFamily
+                    color: Theme.textSecondary
                     Layout.fillWidth: true
                 }
                 
                 Rectangle {
                     Layout.fillWidth: true
                     height: 1
-                    gradient: Gradient {
-                        orientation: Gradient.Horizontal
-                        GradientStop { position: 0.0; color: "transparent" }
-                        GradientStop { position: 0.5; color: "#334155" }
-                        GradientStop { position: 1.0; color: "transparent" }
-                    }
+                    color: Theme.dividerColor
                 }
                 
                 // Pipeline Selection
                 Text {
-                    text: "Pipeline hiện tại:"
-                    font.pixelSize: 13
+                    text: "Pipeline:"
+                    font.pixelSize: Theme.fontSizeMedium
                     font.weight: Font.Medium
-                    color: "#E2E8F0"
+                    font.family: Theme.fontFamily
+                    color: Theme.textPrimary
                 }
                 
                 ComboBox {
                     id: pipelineSelector
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 45
+                    Layout.preferredHeight: Theme.inputHeight
                     model: bridge ? bridge.pipelineNames : []
-                    font.pixelSize: 13
+                    font.pixelSize: Theme.fontSizeMedium
+                    font.family: Theme.fontFamily
                     
                     onCurrentTextChanged: {
                         if (currentText) {
@@ -106,48 +81,40 @@ Item {
                     }
                     
                     background: Rectangle {
-                        color: "#0F172A"
-                        radius: 10
-                        border.color: parent.activeFocus ? "#10B981" : "#334155"
-                        border.width: 2
+                        color: Theme.backgroundPrimary
+                        radius: Theme.radiusMedium
+                        border.color: parent.activeFocus ? Theme.successColor : Theme.borderColor
+                        border.width: 1
                     }
                     
                     contentItem: Text {
                         text: parent.displayText || "Chọn pipeline..."
-                        color: "#E2E8F0"
+                        color: Theme.textPrimary
                         font: parent.font
                         verticalAlignment: Text.AlignVCenter
-                        leftPadding: 12
+                        leftPadding: Theme.spacingMedium
                     }
                 }
                 
                 // Create New Pipeline
                 RowLayout {
                     Layout.fillWidth: true
-                    spacing: 10
+                    spacing: Theme.spacingSmall
                     
-                    TextField {
+                    StyledTextField {
                         id: newPipelineField
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 45
-                        placeholderText: "Tên pipeline mới..."
-                        font.pixelSize: 13
-                        color: "white"
-                        
-                        background: Rectangle {
-                            color: "#0F172A"
-                            radius: 10
-                            border.color: parent.activeFocus ? "#10B981" : "#334155"
-                            border.width: 1
-                        }
+                        Layout.preferredHeight: Theme.inputHeight
+                        placeholderText: "Tên pipeline..."
                     }
                     
                     Button {
                         text: "+"
-                        Layout.preferredWidth: 45
-                        Layout.preferredHeight: 45
-                        font.pixelSize: 18
+                        width: Theme.inputHeight
+                        height: Theme.inputHeight
+                        font.pixelSize: 16
                         font.weight: Font.Bold
+                        font.family: Theme.fontFamily
                         
                         onClicked: {
                             if (newPipelineField.text) {
@@ -157,16 +124,13 @@ Item {
                         }
                         
                         background: Rectangle {
-                            gradient: Gradient {
-                                GradientStop { position: 0.0; color: parent.hovered ? "#059669" : "#10B981" }
-                                GradientStop { position: 1.0; color: parent.hovered ? "#047857" : "#059669" }
-                            }
-                            radius: 10
+                            color: parent.hovered ? "#388E3C" : Theme.successColor
+                            radius: Theme.radiusMedium
                         }
                         
                         contentItem: Text {
                             text: parent.text
-                            color: "white"
+                            color: Theme.textOnPrimary
                             font: parent.font
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
@@ -177,87 +141,56 @@ Item {
                 Rectangle {
                     Layout.fillWidth: true
                     height: 1
-                    color: "#334155"
+                    color: Theme.dividerColor
                 }
                 
                 // Action Buttons
                 Text {
                     text: "THAO TÁC"
-                    font.pixelSize: 11
+                    font.pixelSize: Theme.fontSizeSmall
                     font.weight: Font.Bold
-                    font.family: "Segoe UI"
-                    color: "#60A5FA"
-                    font.letterSpacing: 1.5
+                    font.family: Theme.fontFamily
+                    color: Theme.primaryColor
+                    font.letterSpacing: 1
                 }
                 
-                Button {
-                    text: "Phân tích Chất lượng"
+                PrimaryButton {
+                    text: "Phân tích"
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 45
-                    font.pixelSize: 13
-                    font.weight: Font.DemiBold
-                    
+                    Layout.preferredHeight: Theme.inputHeight
+                    buttonColor: Theme.accentColor
+                    buttonHoverColor: Theme.accentDark
                     onClicked: bridge.analyze_data_quality()
-                    
-                    background: Rectangle {
-                        gradient: Gradient {
-                            GradientStop { position: 0.0; color: parent.hovered ? "#7C3AED" : "#9333EA" }
-                            GradientStop { position: 1.0; color: parent.hovered ? "#6D28D9" : "#7C3AED" }
-                        }
-                        radius: 10
-                    }
-                    
-                    contentItem: Text {
-                        text: parent.text
-                        color: "white"
-                        font: parent.font
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
                 }
                 
-                Button {
-                    text: "Thực thi Pipeline"
+                PrimaryButton {
+                    text: "Thực thi"
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 45
-                    font.pixelSize: 13
-                    font.weight: Font.DemiBold
-                    
+                    Layout.preferredHeight: Theme.inputHeight
+                    buttonColor: Theme.successColor
+                    buttonHoverColor: "#388E3C"
                     onClicked: bridge.execute_pipeline()
-                    
-                    background: Rectangle {
-                        gradient: Gradient {
-                            GradientStop { position: 0.0; color: parent.hovered ? "#059669" : "#10B981" }
-                            GradientStop { position: 1.0; color: parent.hovered ? "#047857" : "#059669" }
-                        }
-                        radius: 10
-                    }
-                    
-                    contentItem: Text {
-                        text: parent.text
-                        color: "white"
-                        font: parent.font
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
                 }
                 
                 Button {
-                    text: "Reset Dữ liệu"
+                    text: "Reset"
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 40
-                    font.pixelSize: 12
+                    Layout.preferredHeight: Theme.buttonHeightMedium
+                    font.pixelSize: Theme.fontSizeMedium
+                    font.family: Theme.fontFamily
                     
                     onClicked: bridge.reset_transformations()
                     
                     background: Rectangle {
-                        color: parent.hovered ? "#475569" : "#334155"
-                        radius: 10
+                        color: parent.hovered ? Theme.backgroundHover : Theme.backgroundSecondary
+                        radius: Theme.radiusMedium
+                        border.color: Theme.borderColor
+                        border.width: 1
                     }
                     
                     contentItem: Text {
                         text: parent.text
-                        color: "#E2E8F0"
+                        color: Theme.textSecondary
                         font: parent.font
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -274,54 +207,67 @@ Item {
             Layout.fillWidth: true
             spacing: 0
             
-            // Tab Bar
+            // Tab Bar - Compact
             TabBar {
                 id: etlTabs
                 Layout.fillWidth: true
-                Layout.preferredHeight: 60
+                Layout.preferredHeight: Theme.tabBarHeight
                 
                 background: Rectangle {
-                    color: "#0F172A"
-                    opacity: 0.6
+                    color: Theme.backgroundSecondary
                 }
                 
                 TabButton {
                     text: "Transform Rules"
-                    font.pixelSize: 14
+                    font.pixelSize: Theme.fontSizeMedium
                     font.weight: Font.DemiBold
+                    font.family: Theme.fontFamily
                     
                     contentItem: Text {
                         text: parent.text
                         font: parent.font
-                        color: parent.checked ? "#10B981" : "#94A3B8"
+                        color: parent.checked ? Theme.successColor : Theme.textSecondary
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                     }
                     
                     background: Rectangle {
-                        color: parent.checked ? "#10B981" : "transparent"
-                        opacity: parent.checked ? 0.2 : 0
-                        radius: 10
+                        color: "transparent"
+                        
+                        Rectangle {
+                            anchors.bottom: parent.bottom
+                            width: parent.width
+                            height: 2
+                            color: Theme.successColor
+                            visible: parent.parent.checked
+                        }
                     }
                 }
                 
                 TabButton {
                     text: "Data Quality"
-                    font.pixelSize: 14
+                    font.pixelSize: Theme.fontSizeMedium
                     font.weight: Font.DemiBold
+                    font.family: Theme.fontFamily
                     
                     contentItem: Text {
                         text: parent.text
                         font: parent.font
-                        color: parent.checked ? "#10B981" : "#94A3B8"
+                        color: parent.checked ? Theme.successColor : Theme.textSecondary
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                     }
                     
                     background: Rectangle {
-                        color: parent.checked ? "#10B981" : "transparent"
-                        opacity: parent.checked ? 0.2 : 0
-                        radius: 10
+                        color: "transparent"
+                        
+                        Rectangle {
+                            anchors.bottom: parent.bottom
+                            width: parent.width
+                            height: 2
+                            color: Theme.successColor
+                            visible: parent.parent.checked
+                        }
                     }
                 }
             }

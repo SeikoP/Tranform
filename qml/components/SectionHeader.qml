@@ -6,6 +6,7 @@ RowLayout {
     
     property string title: ""
     property color accentColor: Theme.primaryColor
+    property bool useGradient: false
     
     spacing: Theme.spacingSmall
     
@@ -13,7 +14,15 @@ RowLayout {
         width: 3
         height: 18
         radius: 1.5
-        color: root.accentColor
+        
+        gradient: root.useGradient ? gradientObj : null
+        color: root.useGradient ? "transparent" : root.accentColor
+        
+        Gradient {
+            id: gradientObj
+            GradientStop { position: 0.0; color: Theme.primaryColor }
+            GradientStop { position: 1.0; color: Theme.primaryDark }
+        }
     }
     
     Text {

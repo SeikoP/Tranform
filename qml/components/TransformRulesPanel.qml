@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Effects
+import ".."
 
 Item {
     id: root
@@ -20,7 +21,7 @@ Item {
                 text: "📋 Transformation Rules"
                 font.pixelSize: 20
                 font.weight: Font.Bold
-                color: "white"
+                color: Theme.darkMode ? "white" : Theme.textPrimary
             }
             
             Item { Layout.fillWidth: true }
@@ -34,8 +35,8 @@ Item {
                 
                 background: Rectangle {
                     gradient: Gradient {
-                        GradientStop { position: 0.0; color: parent.hovered ? "#2563EB" : "#3B82F6" }
-                        GradientStop { position: 1.0; color: parent.hovered ? "#1E40AF" : "#2563EB" }
+                        GradientStop { position: 0.0; color: parent.hovered ? Theme.primaryDark : Theme.primaryColor }
+                        GradientStop { position: 1.0; color: parent.hovered ? Theme.primaryDark : Theme.primaryLight }
                     }
                     radius: 10
                 }
@@ -66,10 +67,10 @@ Item {
                     delegate: Rectangle {
                         Layout.fillWidth: true
                         height: 80
-                        color: "#1E293B"
+                        color: Theme.darkMode ? "#1E293B" : Theme.surfaceColor
                         opacity: 0.9
                         radius: 12
-                        border.color: "#334155"
+                        border.color: Theme.borderColor
                         border.width: 1
                         
                         RowLayout {
@@ -99,13 +100,13 @@ Item {
                                     text: modelData.name
                                     font.pixelSize: 15
                                     font.weight: Font.Bold
-                                    color: "white"
+                                    color: Theme.darkMode ? "white" : Theme.textPrimary
                                 }
                                 
                                 Text {
                                     text: getRuleDescription(modelData.type)
                                     font.pixelSize: 12
-                                    color: "#94A3B8"
+                                    color: Theme.textSecondary
                                 }
                             }
                             
@@ -123,7 +124,7 @@ Item {
                                 onClicked: bridge.remove_transform_rule(modelData.name)
                                 
                                 background: Rectangle {
-                                    color: parent.hovered ? "#DC2626" : "#EF4444"
+                                    color: parent.hovered ? Theme.errorColor : Theme.errorColor
                                     radius: 8
                                     opacity: parent.hovered ? 1.0 : 0.8
                                 }
@@ -185,9 +186,9 @@ Item {
         anchors.centerIn: parent
         
         background: Rectangle {
-            color: "#1E293B"
+            color: Theme.darkMode ? "#1E293B" : Theme.surfaceColor
             radius: 16
-            border.color: "#3B82F6"
+            border.color: Theme.primaryColor
             border.width: 2
         }
         

@@ -173,13 +173,36 @@ Item {
                     id: erdCanvas
                     width: 2000
                     height: 2000
+                    
+                    // Relationship lines layer (behind tables)
+                    Item {
+                        id: relationshipsLayer
+                        anchors.fill: parent
+                        z: 0
+                        
+                        Repeater {
+                            id: relationshipRepeater
+                            model: getRelationships()
+                            
+                            delegate: ConnectionLine {
+                                startPoint: modelData.start
+                                endPoint: modelData.end
+                                lineColor: Theme.primaryColor
+                                lineWidth: 2
+                                relationshipType: modelData.type
+                            }
+                        }
+                    }
 
+                    // Tables layer (on top)
                     Repeater {
                         id: tableRepeater
                         model: bridge ? Object.keys(bridge.tables) : []
                         delegate: TableCard {
+                            id: tableCard
                             tableName: modelData
                             columns: bridge ? bridge.tables[modelData] : []
+                            z: 1
                             
                             // Initial position with some spacing
                             Component.onCompleted: {
@@ -188,10 +211,75 @@ Item {
                                 x = 50 + col * 320
                                 y = 50 + row * 300
                             }
+                            
+                            // Update relationships when table moves
+                            onXChanged: updateRelationships()
+                            onYChanged: updateRelationships()
                         }
                     }
                 }
             }
+        }
+    }
+    
+    // Helper functions
+    function getRelationships() {
+        if (!bridge || !bridge.tables) return []
+        
+        var relationships = []
+        var tables = bridge.tables
+        var tableNames = Object.keys(tables)
+        
+        // Find all foreign key relationships
+        for (var i = 0; i < tableNames.length; i++) {
+            var tableName = tableNames[i]
+            var columns = tables[tableName]
+            
+            for (var j = 0; j < columns.length; j++) {
+                var col = columns[j]
+                if (col.ref_table && tableNames.indexOf(col.ref_table) !== -1) {
+                    // Find table positions
+                    var sourceTable = findTableCard(tableName)
+                    var targetTable = findTableCard(col.ref_table)
+                    
+                    if (sourceTable && targetTable) {
+                        relationships.push({
+                            start: Qt.point(
+                                sourceTable.x + sourceTable.width / 2,
+                                sourceTable.y + sourceTable.height / 2
+                            ),
+                            end: Qt.point(
+                                targetTable.x + targetTable.width / 2,
+                                targetTable.y + targetTable.height / 2
+                            ),
+                            type: "one-to-many"
+                        })
+                    }
+                }
+            }
+        }
+        
+        return relationships
+    }
+    
+    function findTableCard(tableName) {
+        for (var i = 0; i < tableRepeater.count; i++) {
+            var item = tableRepeater.itemAt(i)
+            if (item && item.tableName === tableName) {
+                return item
+            }
+        }
+        return null
+    }
+    
+    function updateRelationships() {
+        relationshipRepeater.model = getRelationships()
+    }
+    
+    Connections {
+        target: bridge
+        function onErdChanged() {
+            updateRelationships()
         }
     }
 }
