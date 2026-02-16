@@ -1,9 +1,23 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Effects
 
 Item {
     id: root
+    
+    // Entrance animation
+    opacity: 0
+    Component.onCompleted: {
+        fadeIn.start()
+    }
+    
+    NumberAnimation on opacity {
+        id: fadeIn
+        to: 1.0
+        duration: 600
+        easing.type: Easing.OutQuad
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -50,21 +64,46 @@ Item {
         }
 
         // Data Preview Title
-        Text {
-            text: "Xem trước Dữ liệu (15 dòng đầu):"
-            font.pixelSize: 18
-            font.weight: Font.DemiBold
-            color: "#1E293B"
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+            
+            Rectangle {
+                width: 4
+                height: 24
+                radius: 2
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#3B82F6" }
+                    GradientStop { position: 1.0; color: "#8B5CF6" }
+                }
+            }
+            
+            Text {
+                text: "📋 Xem trước Dữ liệu (15 dòng đầu)"
+                font.pixelSize: 20
+                font.weight: Font.Bold
+                color: "white"
+            }
         }
 
         // Data Table Container
         Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            color: "white"
-            radius: 12
-            border.color: "#E2E8F0"
+            color: "#1E293B"
+            opacity: 0.9
+            radius: 16
+            border.color: "#334155"
+            border.width: 1
             clip: true
+            
+            layer.enabled: true
+            layer.effect: MultiEffect {
+                shadowEnabled: true
+                shadowColor: "#000000"
+                shadowOpacity: 0.4
+                shadowBlur: 20
+            }
 
             ScrollView {
                 anchors.fill: parent
@@ -73,25 +112,34 @@ Item {
                 ColumnLayout {
                     id: tableContent
                     spacing: 0
-                    width: Math.max(parent.width, (bridge ? bridge.columnNames.length : 0) * 150)
+                    width: Math.max(parent.width, (bridge ? bridge.columnNames.length : 0) * 180)
 
                     // Table Header
                     Row {
                         Layout.fillWidth: true
-                        height: 50
+                        height: 55
                         
                         Repeater {
                             model: bridge ? bridge.columnNames : []
                             delegate: Rectangle {
-                                width: 150; height: 50
-                                color: "#F8FAFC"
-                                border.color: "#E2E8F0"
+                                width: 180
+                                height: 55
+                                gradient: Gradient {
+                                    GradientStop { position: 0.0; color: "#334155" }
+                                    GradientStop { position: 1.0; color: "#1E293B" }
+                                }
+                                border.color: "#475569"
+                                
                                 Text {
                                     anchors.centerIn: parent
+                                    anchors.margins: 10
                                     text: modelData
-                                    font.bold: true
-                                    color: "#475569"
+                                    font.pixelSize: 13
+                                    font.weight: Font.Bold
+                                    color: "#60A5FA"
                                     elide: Text.ElideRight
+                                    width: parent.width - 20
+                                    horizontalAlignment: Text.AlignHCenter
                                 }
                             }
                         }
@@ -101,20 +149,38 @@ Item {
                     Repeater {
                         model: bridge ? bridge.previewData : []
                         delegate: Row {
-                            height: 40
+                            height: 45
+                            
                             Repeater {
                                 model: bridge ? bridge.columnNames : []
                                 delegate: Rectangle {
-                                    width: 150; height: 40
-                                    border.color: "#F1F5F9"
+                                    width: 180
+                                    height: 45
+                                    color: index % 2 === 0 ? "#0F172A" : "#1E293B"
+                                    border.color: "#334155"
+                                    opacity: rowMouseArea.containsMouse ? 1.0 : 0.8
+                                    
+                                    Behavior on opacity {
+                                        NumberAnimation { duration: 150 }
+                                    }
+                                    
                                     Text {
                                         anchors.centerIn: parent
+                                        anchors.margins: 10
                                         text: modelData ? parent.parent.modelData[modelData] : ""
-                                        color: "#64748B"
-                                        font.pixelSize: 12
+                                        color: "#CBD5E1"
+                                        font.pixelSize: 13
                                         elide: Text.ElideRight
+                                        width: parent.width - 20
+                                        horizontalAlignment: Text.AlignHCenter
                                     }
                                 }
+                            }
+                            
+                            MouseArea {
+                                id: rowMouseArea
+                                anchors.fill: parent
+                                hoverEnabled: true
                             }
                         }
                     }

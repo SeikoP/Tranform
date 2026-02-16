@@ -3,3 +3,8 @@ pandas==2.2.1
 numpy==1.26.4
 scikit-learn==1.4.1.post1
 openpyxl==3.1.2
+
+# Database connectors (optional - install as needed)
+# pymysql>=1.1.0        # For MySQL connections
+# psycopg2-binary>=2.9.9  # For PostgreSQL connections
+# pyodbc>=5.0.0         # For SQL Server connections
