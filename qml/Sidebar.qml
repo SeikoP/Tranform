@@ -85,12 +85,14 @@ Rectangle {
                     color: "white"
                     font.pixelSize: 20
                     font.weight: Font.Bold
+                    font.family: "Segoe UI"
                 }
                 Text {
                     text: "Premium Edition"
                     color: "#60A5FA"
                     font.pixelSize: 11
                     font.weight: Font.Medium
+                    font.family: "Segoe UI"
                 }
             }
         }
@@ -109,16 +111,17 @@ Rectangle {
         }
         
         Text {
-            text: "⚡ THAO TÁC"
+            text: "THAO TÁC"
             color: "#60A5FA"
             font.pixelSize: 12
             font.weight: Font.Bold
+            font.family: "Segoe UI"
             font.letterSpacing: 1.5
         }
 
         Button {
             id: openBtn
-            text: "📥 Import Dữ liệu"
+            text: "Import Dữ liệu"
             Layout.fillWidth: true
             Layout.preferredHeight: 50
             font.pixelSize: 15
@@ -158,7 +161,7 @@ Rectangle {
 
         Button {
             id: exportBtn
-            text: "📤 Export Kết Quả"
+            text: "Export Kết Quả"
             Layout.fillWidth: true
             Layout.preferredHeight: 50
             font.pixelSize: 15

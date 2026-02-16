@@ -59,9 +59,10 @@ Item {
                     }
                     
                     Text {
-                        text: "🎯 Thiết kế Mô hình"
+                        text: "Thiết kế Mô hình"
                         font.pixelSize: 22
                         font.weight: Font.Bold
+                        font.family: "Segoe UI"
                         color: "white"
                     }
                 }
@@ -69,6 +70,7 @@ Item {
                 Text {
                     text: "Xác định các bảng và mối quan hệ để chuẩn hóa dữ liệu lên 3NF."
                     font.pixelSize: 14
+                    font.family: "Segoe UI"
                     color: "#94A3B8"
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
@@ -108,7 +110,7 @@ Item {
 
                 Button {
                     id: createTableBtn
-                    text: "➕ Tạo Bảng Mới"
+                    text: "Tạo Bảng Mới"
                     Layout.fillWidth: true
                     Layout.preferredHeight: 50
                     font.pixelSize: 15
@@ -152,16 +154,17 @@ Item {
                 Item { Layout.preferredHeight: 15 }
 
                 Text {
-                    text: "⚡ TỰ ĐỘNG HÓA"
+                    text: "TỰ ĐỘNG HÓA"
                     font.pixelSize: 12
                     font.weight: Font.Bold
+                    font.family: "Segoe UI"
                     color: "#60A5FA"
                     font.letterSpacing: 1.5
                 }
 
                 Button {
                     id: aiBtn
-                    text: "✨ Đề xuất ERD (AI)"
+                    text: "Đề xuất ERD (AI)"
                     Layout.fillWidth: true
                     Layout.preferredHeight: 50
                     font.pixelSize: 15
@@ -224,31 +227,6 @@ Item {
                         delegate: TableCard {
                             tableName: modelData
                             columns: bridge ? bridge.tables[modelData] : []
-                            
-                            // Staggered entrance animation
-                            opacity: 0
-                            y: 20
-                            
-                            Component.onCompleted: {
-                                opacityAnim.start()
-                                yAnim.start()
-                            }
-                            
-                            NumberAnimation on opacity {
-                                id: opacityAnim
-                                to: 1.0
-                                duration: 400
-                                easing.type: Easing.OutQuad
-                                delay: index * 100
-                            }
-                            
-                            NumberAnimation on y {
-                                id: yAnim
-                                to: 0
-                                duration: 400
-                                easing.type: Easing.OutQuad
-                                delay: index * 100
-                            }
                         }
                     }
                 }

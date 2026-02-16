@@ -32,7 +32,7 @@ Item {
             StatCard {
                 title: "Số bản ghi"
                 value: bridge ? bridge.stats.records : 0
-                icon: "📊"
+                icon: "REC"
                 statColor: "#2563EB"
                 Layout.fillWidth: true
                 Layout.preferredHeight: 100
@@ -40,7 +40,7 @@ Item {
             StatCard {
                 title: "Số cột"
                 value: bridge ? bridge.stats.columns : 0
-                icon: "📋"
+                icon: "COL"
                 statColor: "#9333EA"
                 Layout.fillWidth: true
                 Layout.preferredHeight: 100
@@ -48,7 +48,7 @@ Item {
             StatCard {
                 title: "Dim Candidates"
                 value: bridge ? bridge.stats.dim : 0
-                icon: "🔍"
+                icon: "DIM"
                 statColor: "#EA580C"
                 Layout.fillWidth: true
                 Layout.preferredHeight: 100
@@ -56,7 +56,7 @@ Item {
             StatCard {
                 title: "Fact Candidates"
                 value: bridge ? bridge.stats.fact : 0
-                icon: "📍"
+                icon: "FCT"
                 statColor: "#0D9488"
                 Layout.fillWidth: true
                 Layout.preferredHeight: 100
@@ -79,9 +79,10 @@ Item {
             }
             
             Text {
-                text: "📋 Xem trước Dữ liệu (15 dòng đầu)"
+                text: "Xem trước Dữ liệu (15 dòng đầu)"
                 font.pixelSize: 20
                 font.weight: Font.Bold
+                font.family: "Segoe UI"
                 color: "white"
             }
         }

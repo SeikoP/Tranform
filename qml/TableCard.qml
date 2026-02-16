@@ -71,15 +71,28 @@ Rectangle {
                 anchors.rightMargin: 20
                 spacing: 12
                 
-                Text {
-                    text: tableName.toLowerCase().startsWith("fact") ? "📊" : "🗂️"
-                    font.pixelSize: 24
+                Rectangle {
+                    width: 32
+                    height: 32
+                    radius: 6
+                    color: "white"
+                    opacity: 0.2
+                    
+                    Text {
+                        anchors.centerIn: parent
+                        text: tableName.toLowerCase().startsWith("fact") ? "F" : "D"
+                        font.pixelSize: 16
+                        font.weight: Font.Bold
+                        font.family: "Segoe UI"
+                        color: "white"
+                    }
                 }
                 
                 Text {
                     text: tableName
                     font.pixelSize: 16
                     font.weight: Font.Bold
+                    font.family: "Segoe UI"
                     color: "white"
                     Layout.fillWidth: true
                 }
@@ -135,15 +148,28 @@ Rectangle {
                         anchors.rightMargin: 12
                         spacing: 10
                         
-                        Text {
-                            text: modelData.is_primary ? "🔑" : (modelData.ref_table ? "🔗" : "▪️")
-                            font.pixelSize: 14
+                        Rectangle {
+                            width: 24
+                            height: 24
+                            radius: 4
+                            color: modelData.is_primary ? "#F59E0B" : (modelData.ref_table ? "#3B82F6" : "#64748B")
+                            opacity: 0.3
+                            
+                            Text {
+                                anchors.centerIn: parent
+                                text: modelData.is_primary ? "PK" : (modelData.ref_table ? "FK" : "")
+                                font.pixelSize: 9
+                                font.weight: Font.Bold
+                                font.family: "Segoe UI"
+                                color: "white"
+                            }
                         }
                         
                         Text {
                             text: modelData.name
                             font.pixelSize: 14
                             font.weight: modelData.is_primary ? Font.Bold : Font.Normal
+                            font.family: "Segoe UI"
                             color: modelData.is_primary ? "#FCD34D" : "#E2E8F0"
                             Layout.fillWidth: true
                         }

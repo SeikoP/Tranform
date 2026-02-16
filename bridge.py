@@ -342,3 +342,208 @@ class DataBridge(QObject):
         self._connection_manager.remove_connection(name)
         self._update_connections_list()
         self.statusChanged.emit(f"✅ Đã xóa kết nối: {name}", "green")
+
+    # ETL Pipeline Methods
+    
+    @Property(list, notify=dataChanged)
+    def pipelineNames(self):
+        """Get list of available pipeline names"""
+        return self._pipeline_manager.list_pipelines()
+    
+    @Property(list, notify=dataChanged)
+    def transformRules(self):
+        """Get current transform rules"""
+        return self._transform_rules
+    
+    @Property(dict, notify=dataChanged)
+    def dataQualityProfile(self):
+        """Get data quality profile"""
+        return self._data_quality_profile
+    
+    @Slot(str)
+    def create_pipeline(self, name):
+        """Create new ETL pipeline"""
+        try:
+            pipeline = self._pipeline_manager.create_pipeline(name)
+            self._current_pipeline = pipeline
+            self.dataChanged.emit()
+            self.statusChanged.emit(f"✅ Đã tạo pipeline: {name}", "green")
+        except Exception as e:
+            self.statusChanged.emit(f"❌ Lỗi tạo pipeline: {str(e)}", "red")
+    
+    @Slot(str)
+    def load_pipeline(self, name):
+        """Load existing pipeline"""
+        try:
+            pipeline = self._pipeline_manager.get_pipeline(name)
+            if pipeline:
+                self._current_pipeline = pipeline
+                self._update_transform_rules_list()
+                self.dataChanged.emit()
+                self.statusChanged.emit(f"✅ Đã load pipeline: {name}", "green")
+            else:
+                self.statusChanged.emit(f"⚠ Pipeline không tồn tại: {name}", "orange")
+        except Exception as e:
+            self.statusChanged.emit(f"❌ Lỗi load pipeline: {str(e)}", "red")
+    
+    @Slot(str)
+    def delete_pipeline(self, name):
+        """Delete pipeline"""
+        try:
+            self._pipeline_manager.delete_pipeline(name)
+            if self._current_pipeline and self._current_pipeline.name == name:
+                self._current_pipeline = None
+            self.dataChanged.emit()
+            self.statusChanged.emit(f"✅ Đã xóa pipeline: {name}", "green")
+        except Exception as e:
+            self.statusChanged.emit(f"❌ Lỗi xóa pipeline: {str(e)}", "red")
+    
+    @Slot(str, str, str)
+    def add_transform_rule(self, rule_name, rule_type, config_json):
+        """Add transformation rule to current pipeline"""
+        if not self._current_pipeline:
+            self.statusChanged.emit("⚠ Chưa chọn pipeline", "orange")
+            return
+        
+        try:
+            import json
+            config = json.loads(config_json)
+            rule = TransformRule(rule_name, rule_type, config)
+            self._current_pipeline.add_rule(rule)
+            self._pipeline_manager.save_pipelines()
+            self._update_transform_rules_list()
+            self.dataChanged.emit()
+            self.statusChanged.emit(f"✅ Đã thêm rule: {rule_name}", "green")
+        except Exception as e:
+            self.statusChanged.emit(f"❌ Lỗi thêm rule: {str(e)}", "red")
+    
+    @Slot(str)
+    def remove_transform_rule(self, rule_name):
+        """Remove transformation rule"""
+        if not self._current_pipeline:
+            return
+        
+        try:
+            self._current_pipeline.remove_rule(rule_name)
+            self._pipeline_manager.save_pipelines()
+            self._update_transform_rules_list()
+            self.dataChanged.emit()
+            self.statusChanged.emit(f"✅ Đã xóa rule: {rule_name}", "green")
+        except Exception as e:
+            self.statusChanged.emit(f"❌ Lỗi xóa rule: {str(e)}", "red")
+    
+    @Slot()
+    def execute_pipeline(self):
+        """Execute current pipeline on loaded data"""
+        if self._df is None:
+            self.statusChanged.emit("⚠ Chưa có dữ liệu", "orange")
+            return
+        
+        if not self._current_pipeline:
+            self.statusChanged.emit("⚠ Chưa chọn pipeline", "orange")
+            return
+        
+        try:
+            self.statusChanged.emit("⏳ Đang thực thi pipeline...", "blue")
+            self._df_transformed, stats = self._current_pipeline.execute(self._df)
+            
+            # Update preview with transformed data
+            preview_df = self._df_transformed.head(15).fillna("")
+            self._preview_data = preview_df.to_dict('records')
+            
+            # Update stats
+            self._update_stats_and_preview()
+            
+            self.dataChanged.emit()
+            self.statusChanged.emit(
+                f"✅ Pipeline hoàn tất: {stats['final_rows']} rows, {len(stats['rules_applied'])} rules", 
+                "green"
+            )
+        except Exception as e:
+            self.statusChanged.emit(f"❌ Lỗi thực thi: {str(e)}", "red")
+    
+    @Slot()
+    def analyze_data_quality(self):
+        """Analyze data quality of current dataset"""
+        if self._df is None:
+            self.statusChanged.emit("⚠ Chưa có dữ liệu", "orange")
+            return
+        
+        try:
+            self.statusChanged.emit("⏳ Đang phân tích chất lượng dữ liệu...", "blue")
+            
+            # Use transformed data if available, otherwise use original
+            df_to_analyze = self._df_transformed if self._df_transformed is not None else self._df
+            
+            profile = DataQualityChecker.profile_data(df_to_analyze)
+            anomalies = DataQualityChecker.detect_anomalies(df_to_analyze)
+            
+            self._data_quality_profile = {
+                'profile': profile,
+                'anomalies': anomalies
+            }
+            
+            self.dataChanged.emit()
+            
+            # Count total issues
+            total_issues = sum(len(v) for v in anomalies.values())
+            self.statusChanged.emit(
+                f"✅ Phân tích hoàn tất: {total_issues} vấn đề phát hiện", 
+                "green" if total_issues == 0 else "orange"
+            )
+        except Exception as e:
+            self.statusChanged.emit(f"❌ Lỗi phân tích: {str(e)}", "red")
+    
+    @Slot()
+    def reset_transformations(self):
+        """Reset to original data, discard transformations"""
+        self._df_transformed = None
+        if self._df is not None:
+            preview_df = self._df.head(15).fillna("")
+            self._preview_data = preview_df.to_dict('records')
+            self.dataChanged.emit()
+            self.statusChanged.emit("✅ Đã reset về dữ liệu gốc", "green")
+    
+    @Slot()
+    def apply_transformations_permanently(self):
+        """Apply transformations permanently (replace original data)"""
+        if self._df_transformed is not None:
+            self._df = self._df_transformed.copy()
+            self._df_transformed = None
+            self.statusChanged.emit("✅ Đã áp dụng transformations", "green")
+    
+    def _update_transform_rules_list(self):
+        """Update transform rules list for QML"""
+        if self._current_pipeline:
+            self._transform_rules = [
+                {
+                    'name': r.name,
+                    'type': r.rule_type,
+                    'enabled': r.enabled
+                }
+                for r in self._current_pipeline.rules
+            ]
+        else:
+            self._transform_rules = []
+    
+    @Slot(str, str, str)
+    def add_quick_rule(self, rule_type, column, value):
+        """Quick add common transformation rules"""
+        if not self._current_pipeline:
+            # Auto-create a pipeline if none exists
+            self.create_pipeline("default_pipeline")
+        
+        import json
+        rule_name = f"{rule_type}_{column}_{len(self._current_pipeline.rules)}"
+        
+        config = {}
+        if rule_type == "fill_missing":
+            config = {"columns": [column], "method": "constant", "value": value}
+        elif rule_type == "convert_type":
+            config = {"columns": [column], "target_type": value}
+        elif rule_type == "trim_strings":
+            config = {"columns": [column]}
+        elif rule_type == "normalize_text":
+            config = {"columns": [column], "case": value}
+        
+        self.add_transform_rule(rule_name, rule_type, json.dumps(config))

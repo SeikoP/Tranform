@@ -61,13 +61,10 @@ Rectangle {
             Text {
                 anchors.centerIn: parent
                 text: icon
-                font.pixelSize: 28
-                
-                SequentialAnimation on scale {
-                    loops: Animation.Infinite
-                    NumberAnimation { to: 1.1; duration: 1500; easing.type: Easing.InOutQuad }
-                    NumberAnimation { to: 1.0; duration: 1500; easing.type: Easing.InOutQuad }
-                }
+                font.pixelSize: 14
+                font.weight: Font.Bold
+                font.family: "Segoe UI"
+                color: statColor
             }
         }
 
@@ -80,6 +77,7 @@ Rectangle {
                 color: "#94A3B8"
                 font.pixelSize: 13
                 font.weight: Font.Medium
+                font.family: "Segoe UI"
                 font.letterSpacing: 0.5
             }
             Text {
@@ -87,6 +85,7 @@ Rectangle {
                 color: "white"
                 font.pixelSize: 28
                 font.weight: Font.Bold
+                font.family: "Segoe UI"
             }
         }
     }

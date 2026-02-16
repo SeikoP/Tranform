@@ -102,9 +102,10 @@ ApplicationWindow {
                     background: Rectangle { color: "transparent" }
                     
                     TabButton { 
-                        text: "📊 Dữ liệu Gốc"
+                        text: "Dữ liệu Gốc"
                         font.pixelSize: 15
                         font.weight: Font.DemiBold
+                        font.family: "Segoe UI"
                         
                         contentItem: Text {
                             text: parent.text
@@ -130,9 +131,39 @@ ApplicationWindow {
                     }
                     
                     TabButton { 
-                        text: "🎯 Mô hình ERD (3NF)"
+                        text: "ETL Pipeline"
                         font.pixelSize: 15
                         font.weight: Font.DemiBold
+                        font.family: "Segoe UI"
+                        
+                        contentItem: Text {
+                            text: parent.text
+                            font: parent.font
+                            color: parent.checked ? "#10B981" : "#94A3B8"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            
+                            Behavior on color {
+                                ColorAnimation { duration: 200 }
+                            }
+                        }
+                        
+                        background: Rectangle {
+                            color: parent.checked ? "#059669" : "transparent"
+                            radius: 12
+                            opacity: parent.checked ? 0.3 : (parent.hovered ? 0.1 : 0)
+                            
+                            Behavior on opacity {
+                                NumberAnimation { duration: 200 }
+                            }
+                        }
+                    }
+                    
+                    TabButton { 
+                        text: "Mô hình ERD (3NF)"
+                        font.pixelSize: 15
+                        font.weight: Font.DemiBold
+                        font.family: "Segoe UI"
                         
                         contentItem: Text {
                             text: parent.text
@@ -167,6 +198,10 @@ ApplicationWindow {
 
                 DataPreview {
                     // Component for data preview
+                }
+                
+                ETLTab {
+                    // Component for ETL Pipeline
                 }
 
                 ErdTab {
@@ -214,9 +249,10 @@ ApplicationWindow {
                     
                     Text {
                         id: statusText
-                        text: "⚡ Sẵn sàng"
+                        text: "Sẵn sàng"
                         font.pixelSize: 13
                         font.weight: Font.Medium
+                        font.family: "Segoe UI"
                         color: "#10B981"
                         
                         Behavior on color {
@@ -227,8 +263,9 @@ ApplicationWindow {
                     Item { Layout.fillWidth: true }
                     
                     Text {
-                        text: "✨ Premium Edition v3.0"
+                        text: "Premium Edition v3.0"
                         font.pixelSize: 11
+                        font.family: "Segoe UI"
                         color: "#60A5FA"
                         font.weight: Font.Medium
                     }
@@ -237,7 +274,7 @@ ApplicationWindow {
                 Connections {
                     target: bridge
                     function onStatusChanged(message, color) {
-                        statusText.text = "⚡ " + message
+                        statusText.text = message
                         if (color === "red") statusText.color = "#EF4444"
                         else if (color === "green") statusText.color = "#10B981"
                         else statusText.color = "#60A5FA"

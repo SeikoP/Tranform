@@ -64,8 +64,11 @@ Dialog {
                 
                 Text {
                     anchors.centerIn: parent
-                    text: "📥"
-                    font.pixelSize: 24
+                    text: "IN"
+                    font.pixelSize: 16
+                    font.weight: Font.Bold
+                    font.family: "Segoe UI"
+                    color: "white"
                 }
             }
             
@@ -75,11 +78,13 @@ Dialog {
                     text: "Import Dữ liệu"
                     font.pixelSize: 22
                     font.weight: Font.Bold
+                    font.family: "Segoe UI"
                     color: "white"
                 }
                 Text {
                     text: "Chọn nguồn dữ liệu để import"
                     font.pixelSize: 13
+                    font.family: "Segoe UI"
                     color: "#94A3B8"
                 }
             }
@@ -111,7 +116,7 @@ Dialog {
                 id: sourceTypeCombo
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
-                model: ["📄 CSV File", "📊 Excel File", "📋 JSON File", "🗄️ SQLite Database", "🐬 MySQL", "🐘 PostgreSQL"]
+                model: ["CSV File", "Excel File", "JSON File", "SQLite Database", "MySQL", "PostgreSQL"]
                 font.pixelSize: 14
                 
                 background: Rectangle {
@@ -150,7 +155,7 @@ Dialog {
                     }
                     
                     Button {
-                        text: "📂 Chọn File CSV"
+                        text: "Chọn File CSV"
                         Layout.fillWidth: true
                         Layout.preferredHeight: 50
                         onClicked: {
@@ -190,7 +195,7 @@ Dialog {
                     }
                     
                     Button {
-                        text: "📊 Chọn File Excel"
+                        text: "Chọn File Excel"
                         Layout.fillWidth: true
                         Layout.preferredHeight: 50
                         onClicked: {
@@ -230,7 +235,7 @@ Dialog {
                     }
                     
                     Button {
-                        text: "📋 Chọn File JSON"
+                        text: "Chọn File JSON"
                         Layout.fillWidth: true
                         Layout.preferredHeight: 50
                         onClicked: {
@@ -287,7 +292,7 @@ Dialog {
                     }
                     
                     Button {
-                        text: "🗄️ Chọn SQLite Database"
+                        text: "Chọn SQLite Database"
                         Layout.fillWidth: true
                         Layout.preferredHeight: 50
                         onClicked: {
@@ -391,7 +396,7 @@ Dialog {
                         }
                         
                         Button {
-                            text: "🐬 Kết nối MySQL"
+                            text: "Kết nối MySQL"
                             Layout.fillWidth: true
                             Layout.preferredHeight: 45
                             onClicked: {
@@ -494,7 +499,7 @@ Dialog {
                         }
                         
                         Button {
-                            text: "🐘 Kết nối PostgreSQL"
+                            text: "Kết nối PostgreSQL"
                             Layout.fillWidth: true
                             Layout.preferredHeight: 45
                             onClicked: {

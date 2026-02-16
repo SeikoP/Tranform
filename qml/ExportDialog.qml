@@ -69,8 +69,11 @@ Dialog {
                 
                 Text {
                     anchors.centerIn: parent
-                    text: "📤"
-                    font.pixelSize: 24
+                    text: "OUT"
+                    font.pixelSize: 14
+                    font.weight: Font.Bold
+                    font.family: "Segoe UI"
+                    color: "white"
                 }
             }
             
