@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import ".."
 
 Button {
     id: control
@@ -18,7 +19,7 @@ Button {
             buttonHoverColor = Theme.accentDark
         } else if (variant === "success") {
             buttonColor = Theme.successColor
-            buttonHoverColor = "#00A344"
+            buttonHoverColor = Theme.successDark
         } else if (variant === "outlined") {
             buttonColor = "transparent"
             buttonHoverColor = Theme.backgroundHover
@@ -37,7 +38,7 @@ Button {
         color: control.hovered ? control.buttonHoverColor : control.buttonColor
         radius: Theme.radiusMedium
         border.color: variant === "outlined" ? Theme.primaryColor : "transparent"
-        border.width: variant === "outlined" ? 2 : 0
+        border.width: variant === "outlined" ? Theme.borderWidthMedium : 0
         
         Behavior on color {
             ColorAnimation { duration: Theme.animationDuration }

@@ -7,10 +7,10 @@ import "."
 
 ApplicationWindow {
     visible: true
-    width: 1100
-    height: 700
-    minimumWidth: 900
-    minimumHeight: 600
+    width: 1200
+    height: 750
+    minimumWidth: 1000
+    minimumHeight: 650
     title: "Transform 3NF"
     color: Theme.backgroundColor
     

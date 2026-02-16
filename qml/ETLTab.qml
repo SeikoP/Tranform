@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Effects
 import "components"
+import "."
 
 Item {
     id: root
@@ -21,13 +22,13 @@ Item {
         anchors.fill: parent
         spacing: 0
         
-        // Left Panel - Pipeline Management (Compact)
+        // Left Panel - Pipeline Management (More compact)
         Rectangle {
             Layout.fillHeight: true
-            Layout.preferredWidth: 220
+            Layout.preferredWidth: Theme.erdSidebarWidth
             color: Theme.backgroundSecondary
             border.color: Theme.borderColor
-            border.width: 1
+            border.width: Theme.borderWidthThin
             
             Behavior on color {
                 ColorAnimation { duration: Theme.animationDuration }
@@ -35,8 +36,8 @@ Item {
             
             ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: Theme.spacingXLarge
-                spacing: Theme.spacingMedium
+                anchors.margins: Theme.paddingMedium
+                spacing: Theme.spacingSmall
                 
                 SectionHeader {
                     title: "ETL Pipeline"
@@ -45,7 +46,7 @@ Item {
                 
                 Text {
                     text: "Extract → Transform → Load"
-                    font.pixelSize: Theme.fontSizeSmall
+                    font.pixelSize: Theme.fontSizeXSmall
                     font.family: Theme.fontFamily
                     color: Theme.textSecondary
                     Layout.fillWidth: true
@@ -60,7 +61,7 @@ Item {
                 // Pipeline Selection
                 Text {
                     text: "Pipeline:"
-                    font.pixelSize: Theme.fontSizeMedium
+                    font.pixelSize: Theme.fontSizeSmall
                     font.weight: Font.Medium
                     font.family: Theme.fontFamily
                     color: Theme.textPrimary
@@ -71,7 +72,7 @@ Item {
                     Layout.fillWidth: true
                     Layout.preferredHeight: Theme.inputHeight
                     model: bridge ? bridge.pipelineNames : []
-                    font.pixelSize: Theme.fontSizeMedium
+                    font.pixelSize: Theme.fontSizeSmall
                     font.family: Theme.fontFamily
                     
                     onCurrentTextChanged: {
@@ -82,21 +83,19 @@ Item {
                     
                     background: Rectangle {
                         color: Theme.backgroundPrimary
-                        radius: Theme.radiusMedium
+                        radius: Theme.radiusSmall
                         border.color: parent.activeFocus ? Theme.successColor : Theme.borderColor
-                        border.width: 1
+                        border.width: Theme.borderWidthThin
                     }
                     
                     contentItem: Text {
-                        text: parent.displayText || "Chọn pipeline..."
+                        text: parent.displayText || "Select pipeline..."
                         color: Theme.textPrimary
                         font: parent.font
                         verticalAlignment: Text.AlignVCenter
-                        leftPadding: Theme.spacingMedium
+                        leftPadding: Theme.spacingSmall
                     }
                 }
-                
-                // Create New Pipeline
                 RowLayout {
                     Layout.fillWidth: true
                     spacing: Theme.spacingSmall

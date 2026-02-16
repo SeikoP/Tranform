@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import "."
 
 Rectangle {
     id: root
@@ -11,7 +12,7 @@ Rectangle {
     color: Theme.backgroundPrimary
     radius: Theme.radiusMedium
     border.color: Theme.borderColor
-    border.width: 1
+    border.width: Theme.borderWidthThin
     
     Behavior on color {
         ColorAnimation { duration: Theme.animationDuration }
@@ -30,20 +31,20 @@ Rectangle {
 
     RowLayout {
         anchors.fill: parent
-        anchors.margins: 12
-        spacing: 10
+        anchors.margins: Theme.paddingMedium
+        spacing: Theme.spacingSmall
 
         Rectangle {
-            width: 36
-            height: 36
-            radius: Theme.radiusMedium
+            width: 28
+            height: 28
+            radius: Theme.radiusSmall
             color: statColor
             opacity: 0.15
             
             Text {
                 anchors.centerIn: parent
                 text: icon
-                font.pixelSize: Theme.fontSizeSmall
+                font.pixelSize: Theme.fontSizeXSmall
                 font.weight: Font.Bold
                 font.family: Theme.fontFamily
                 color: statColor
@@ -51,19 +52,19 @@ Rectangle {
         }
 
         ColumnLayout {
-            spacing: 2
+            spacing: 1
             Layout.fillWidth: true
             
             Text {
                 text: title
                 color: Theme.textSecondary
-                font.pixelSize: Theme.fontSizeSmall
+                font.pixelSize: Theme.fontSizeXSmall
                 font.family: Theme.fontFamily
             }
             Text {
                 text: value.toLocaleString()
                 color: Theme.textPrimary
-                font.pixelSize: 18
+                font.pixelSize: Theme.fontSizeLarge + 2
                 font.weight: Font.Bold
                 font.family: Theme.fontFamily
             }

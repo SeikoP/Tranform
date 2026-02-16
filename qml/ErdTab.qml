@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Effects
 import "components"
+import "."
 
 Item {
     id: root
@@ -24,27 +25,27 @@ Item {
         anchors.fill: parent
         spacing: 0
 
-        // Left Settings Panel
+        // Left Settings Panel - More compact
         Rectangle {
             Layout.fillHeight: true
             Layout.preferredWidth: Theme.erdSidebarWidth
             color: Theme.backgroundSecondary
             border.color: Theme.borderColor
-            border.width: 1
+            border.width: Theme.borderWidthThin
 
             ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: Theme.spacingXLarge
-                spacing: Theme.spacingMedium
+                anchors.margins: Theme.paddingMedium
+                spacing: Theme.spacingSmall
 
                 SectionHeader {
-                    title: "Thiết kế ERD"
+                    title: "ERD Design"
                     accentColor: Theme.primaryColor
                 }
 
                 Text {
-                    text: "Xác định bảng và mối quan hệ"
-                    font.pixelSize: Theme.fontSizeMedium
+                    text: "Define tables & relationships"
+                    font.pixelSize: Theme.fontSizeXSmall
                     font.family: Theme.fontFamily
                     color: Theme.textSecondary
                     Layout.fillWidth: true
@@ -59,16 +60,16 @@ Item {
 
                 StyledTextField {
                     id: tableNameInput
-                    placeholderText: "Tên bảng..."
+                    placeholderText: "Table name..."
                     Layout.fillWidth: true
                     Layout.preferredHeight: Theme.inputHeight
                 }
 
                 PrimaryButton {
                     id: createTableBtn
-                    text: "Tạo Bảng"
+                    text: "Create Table"
                     Layout.fillWidth: true
-                    Layout.preferredHeight: Theme.inputHeight
+                    Layout.preferredHeight: Theme.buttonHeightMedium
                     font.weight: Font.DemiBold
                     
                     onClicked: {
@@ -85,19 +86,19 @@ Item {
                 }
 
                 Text {
-                    text: "TỰ ĐỘNG"
-                    font.pixelSize: Theme.fontSizeSmall
+                    text: "AUTO GENERATE"
+                    font.pixelSize: Theme.fontSizeXSmall
                     font.weight: Font.Bold
                     font.family: Theme.fontFamily
                     color: Theme.primaryColor
-                    font.letterSpacing: 1
+                    font.letterSpacing: 0.5
                 }
 
                 PrimaryButton {
                     id: aiBtn
-                    text: "Đề xuất ERD"
+                    text: "Suggest ERD"
                     Layout.fillWidth: true
-                    Layout.preferredHeight: Theme.inputHeight
+                    Layout.preferredHeight: Theme.buttonHeightMedium
                     font.weight: Font.DemiBold
                     buttonColor: Theme.accentColor
                     buttonHoverColor: Theme.accentDark

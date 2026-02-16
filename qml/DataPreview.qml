@@ -20,146 +20,185 @@ Item {
         easing.type: Easing.OutQuad
     }
 
-    ColumnLayout {
+    // New layout: Stats on left, Table on right
+    RowLayout {
         anchors.fill: parent
-        anchors.margins: 20
-        spacing: 15
+        anchors.margins: Theme.paddingLarge
+        spacing: Theme.spacingLarge
 
-        // Stats Cards
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: 15
+        // Left column - Stats and Info
+        ColumnLayout {
+            Layout.preferredWidth: 200
+            Layout.fillHeight: true
+            spacing: Theme.spacingMedium
 
+            // Header
+            Text {
+                text: "📊 Statistics"
+                font.pixelSize: Theme.fontSizeLarge
+                font.weight: Font.Bold
+                font.family: Theme.fontFamily
+                color: Theme.textPrimary
+            }
+
+            // Stats Cards - vertical
             StatCard {
-                title: "Số bản ghi"
+                title: "Records"
                 value: bridge ? bridge.stats.records : 0
                 icon: "REC"
                 statColor: Theme.primaryColor
                 Layout.fillWidth: true
-                Layout.preferredHeight: 80
+                Layout.preferredHeight: 60
             }
+            
             StatCard {
-                title: "Số cột"
+                title: "Columns"
                 value: bridge ? bridge.stats.columns : 0
                 icon: "COL"
                 statColor: Theme.primaryLight
                 Layout.fillWidth: true
-                Layout.preferredHeight: 80
+                Layout.preferredHeight: 60
             }
+            
             StatCard {
-                title: "Dim Candidates"
+                title: "Dim Tables"
                 value: bridge ? bridge.stats.dim : 0
                 icon: "DIM"
                 statColor: Theme.warningColor
                 Layout.fillWidth: true
-                Layout.preferredHeight: 80
+                Layout.preferredHeight: 60
             }
+            
             StatCard {
-                title: "Fact Candidates"
+                title: "Fact Tables"
                 value: bridge ? bridge.stats.fact : 0
                 icon: "FCT"
                 statColor: Theme.successColor
                 Layout.fillWidth: true
-                Layout.preferredHeight: 80
+                Layout.preferredHeight: 60
             }
+
+            Item { Layout.fillHeight: true }
         }
 
-        // Data Preview Title
-        Text {
-            text: "Xem trước dữ liệu (15 dòng đầu)"
-            font.pixelSize: 14
-            font.weight: Font.DemiBold
-            font.family: Theme.fontFamily
-            color: Theme.textPrimary
-        }
-
-        // Data Table Container
-        Rectangle {
+        // Right column - Data Table
+        ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            color: Theme.surfaceColor
-            radius: 4
-            border.color: Theme.borderColor
-            border.width: 1
-            clip: true
+            spacing: Theme.spacingSmall
 
-            ScrollView {
-                anchors.fill: parent
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
-                
-                ColumnLayout {
-                    id: tableContent
-                    spacing: 0
-                    width: Math.max(parent.width, (bridge ? bridge.columnNames.length : 0) * 180)
+            // Table Header
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: Theme.spacingMedium
 
-                    // Table Header
-                    Row {
-                        Layout.fillWidth: true
-                        height: 40
-                        
-                        Repeater {
-                            model: bridge ? bridge.columnNames : []
-                            delegate: Rectangle {
-                                width: 150
-                                height: 40
-                                color: Theme.backgroundHover
-                                border.color: Theme.borderColor
-                                border.width: 1
-                                
-                                Text {
-                                    anchors.centerIn: parent
-                                    anchors.margins: 8
-                                    text: modelData
-                                    font.pixelSize: 12
-                                    font.weight: Font.DemiBold
-                                    font.family: Theme.fontFamily
-                                    color: Theme.textPrimary
-                                    elide: Text.ElideRight
-                                    width: parent.width - 16
-                                    horizontalAlignment: Text.AlignHCenter
-                                }
-                            }
-                        }
-                    }
+                Text {
+                    text: "📋 Data Preview"
+                    font.pixelSize: Theme.fontSizeLarge
+                    font.weight: Font.Bold
+                    font.family: Theme.fontFamily
+                    color: Theme.textPrimary
+                }
 
-                    // Table Rows
-                    Repeater {
-                        model: bridge ? bridge.previewData : []
-                        delegate: Row {
-                            height: 36
-                            property var rowData: modelData
+                Item { Layout.fillWidth: true }
+
+                Text {
+                    text: "Showing first 15 rows"
+                    font.pixelSize: Theme.fontSizeSmall
+                    font.family: Theme.fontFamily
+                    color: Theme.textSecondary
+                }
+            }
+
+            // Data Table Container
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                color: Theme.cardBackground
+                radius: Theme.radiusSmall
+                border.color: Theme.borderColor
+                border.width: Theme.borderWidthThin
+                clip: true
+
+                ScrollView {
+                    anchors.fill: parent
+                    ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
+                    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+                    
+                    ColumnLayout {
+                        id: tableContent
+                        spacing: 0
+                        width: Math.max(parent.width, (bridge ? bridge.columnNames.length : 0) * 120)
+
+                        // Table Header
+                        Row {
+                            Layout.fillWidth: true
+                            height: 28
                             
                             Repeater {
                                 model: bridge ? bridge.columnNames : []
                                 delegate: Rectangle {
-                                    width: 150
-                                    height: 36
-                                    color: rowMouseArea.containsMouse ? Theme.backgroundHover : Theme.surfaceColor
+                                    width: 120
+                                    height: 28
+                                    color: Theme.backgroundHover
                                     border.color: Theme.borderColor
-                                    border.width: 1
-                                    
-                                    Behavior on color {
-                                        ColorAnimation { duration: 100 }
-                                    }
+                                    border.width: Theme.borderWidthThin
                                     
                                     Text {
                                         anchors.centerIn: parent
-                                        anchors.margins: 8
-                                        text: parent.parent.rowData[modelData] !== undefined ? parent.parent.rowData[modelData] : ""
-                                        color: Theme.textSecondary
-                                        font.pixelSize: 11
+                                        anchors.margins: Theme.paddingSmall
+                                        text: modelData
+                                        font.pixelSize: Theme.fontSizeSmall
+                                        font.weight: Font.DemiBold
                                         font.family: Theme.fontFamily
+                                        color: Theme.textPrimary
                                         elide: Text.ElideRight
-                                        width: parent.width - 16
+                                        width: parent.width - Theme.paddingSmall * 2
                                         horizontalAlignment: Text.AlignHCenter
                                     }
                                 }
                             }
-                            
-                            MouseArea {
-                                id: rowMouseArea
-                                anchors.fill: parent
-                                hoverEnabled: true
+                        }
+
+                        // Table Rows
+                        Repeater {
+                            model: bridge ? bridge.previewData : []
+                            delegate: Row {
+                                height: 24
+                                property var rowData: modelData
+                                
+                                Repeater {
+                                    model: bridge ? bridge.columnNames : []
+                                    delegate: Rectangle {
+                                        width: 120
+                                        height: 24
+                                        color: rowMouseArea.containsMouse ? Theme.backgroundHover : Theme.cardBackground
+                                        border.color: Theme.borderColor
+                                        border.width: Theme.borderWidthThin
+                                        
+                                        Behavior on color {
+                                            ColorAnimation { duration: Theme.animationDurationFast }
+                                        }
+                                        
+                                        Text {
+                                            anchors.centerIn: parent
+                                            anchors.margins: Theme.paddingSmall
+                                            text: parent.parent.rowData[modelData] !== undefined ? parent.parent.rowData[modelData] : ""
+                                            color: Theme.textSecondary
+                                            font.pixelSize: Theme.fontSizeSmall
+                                            font.family: Theme.fontFamily
+                                            elide: Text.ElideRight
+                                            width: parent.width - Theme.paddingSmall * 2
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
+                                    }
+                                }
+                                
+                                MouseArea {
+                                    id: rowMouseArea
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                }
                             }
                         }
                     }

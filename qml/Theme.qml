@@ -58,49 +58,49 @@ QtObject {
     // Typography
     readonly property string fontFamily: "Segoe UI"
     
-    readonly property int fontSizeXLarge: 14
-    readonly property int fontSizeLarge: 12
-    readonly property int fontSizeMedium: 11
-    readonly property int fontSizeSmall: 10
-    readonly property int fontSizeXSmall: 9
-    readonly property int fontSizeTiny: 8
-    readonly property int fontSizeMicro: 7
+    readonly property int fontSizeXLarge: 13
+    readonly property int fontSizeLarge: 11
+    readonly property int fontSizeMedium: 10
+    readonly property int fontSizeSmall: 9
+    readonly property int fontSizeXSmall: 8
+    readonly property int fontSizeTiny: 7
+    readonly property int fontSizeMicro: 6
     
     // Spacing
-    readonly property int spacingXXLarge: 25
-    readonly property int spacingXLarge: 12
-    readonly property int spacingLarge: 10
-    readonly property int spacingMedium: 8
-    readonly property int spacingSmall: 6
-    readonly property int spacingXSmall: 4
+    readonly property int spacingXXLarge: 16
+    readonly property int spacingXLarge: 10
+    readonly property int spacingLarge: 8
+    readonly property int spacingMedium: 6
+    readonly property int spacingSmall: 4
+    readonly property int spacingXSmall: 3
     readonly property int spacingTiny: 2
     
     // Padding/Margins
-    readonly property int paddingXXXLarge: 30
-    readonly property int paddingXXLarge: 25
-    readonly property int paddingXLarge: 20
-    readonly property int paddingLarge: 15
-    readonly property int paddingMedium: 10
+    readonly property int paddingXXXLarge: 20
+    readonly property int paddingXXLarge: 16
+    readonly property int paddingXLarge: 12
+    readonly property int paddingLarge: 10
+    readonly property int paddingMedium: 8
     readonly property int paddingSmall: 6
     
     // Sizes
-    readonly property int sidebarWidth: 120
-    readonly property int erdSidebarWidth: 220
-    readonly property int tabBarHeight: 36
-    readonly property int statusBarHeight: 24
-    readonly property int buttonHeightSmall: 24
-    readonly property int buttonHeightMedium: 28
-    readonly property int buttonHeightLarge: 32
-    readonly property int inputHeight: 32
+    readonly property int sidebarWidth: 100
+    readonly property int erdSidebarWidth: 180
+    readonly property int tabBarHeight: 32
+    readonly property int statusBarHeight: 20
+    readonly property int buttonHeightSmall: 22
+    readonly property int buttonHeightMedium: 26
+    readonly property int buttonHeightLarge: 30
+    readonly property int inputHeight: 28
     
-    readonly property int tableCardWidth: 240
-    readonly property int tableCardHeaderHeight: 36
-    readonly property int tableCardRowHeight: 24
+    readonly property int tableCardWidth: 200
+    readonly property int tableCardHeaderHeight: 30
+    readonly property int tableCardRowHeight: 20
     
     // Border Radius
-    readonly property int radiusXXLarge: 16
-    readonly property int radiusXLarge: 12
-    readonly property int radiusLarge: 8
+    readonly property int radiusXXLarge: 12
+    readonly property int radiusXLarge: 10
+    readonly property int radiusLarge: 6
     readonly property int radiusMedium: 4
     readonly property int radiusSmall: 2
     

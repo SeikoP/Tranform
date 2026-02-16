@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtQuick.Effects
 import "components"
+import "."
 
 Rectangle {
     id: root
@@ -60,8 +61,7 @@ Rectangle {
             text: "Export"
             Layout.fillWidth: true
             Layout.preferredHeight: Theme.buttonHeightMedium
-            buttonColor: Theme.successColor
-            buttonHoverColor: "#388E3C"
+            variant: "success"
             onClicked: exportDialog.open()
         }
 

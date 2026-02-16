@@ -7,228 +7,233 @@ import ".."
 Item {
     id: root
     
-    ScrollView {
+    ColumnLayout {
         anchors.fill: parent
-        anchors.margins: Theme.paddingXXXLarge
-        clip: true
+        anchors.margins: Theme.paddingLarge
+        spacing: Theme.spacingLarge
         
-        ColumnLayout {
-            width: parent.width
-            spacing: Theme.spacingXXLarge
+        // Header - compact
+        Text {
+            text: "📊 Data Quality"
+            font.pixelSize: Theme.fontSizeXLarge + 2
+            font.weight: Font.Bold
+            font.family: Theme.fontFamily
+            color: Theme.textPrimary
+        }
+        
+        // Summary Cards - compact
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: Theme.spacingMedium
             
-            // Header
-            Text {
-                text: "📊 Data Quality Analysis"
-                font.pixelSize: 20
-                font.weight: Font.Bold
-                color: Theme.darkMode ? "white" : Theme.textPrimary
-            }
-            
-            // Summary Cards
-            RowLayout {
-                Layout.fillWidth: true
-                spacing: Theme.spacingXLarge
-                
-                Rectangle {
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: 100
-                    color: Theme.dialogBackground
-                    opacity: 0.9
-                    radius: Theme.radiusXLarge
-                    border.color: Theme.primaryColor
-                    border.width: Theme.borderWidthThin
-                    
-                    RowLayout {
-                        anchors.fill: parent
-                        anchors.margins: Theme.paddingXLarge
-                        spacing: Theme.paddingLarge
-                        
-                        Text {
-                            text: "📊"
-                            font.pixelSize: 32
-                        }
-                        
-                        ColumnLayout {
-                            spacing: 5
-                            
-                            Text {
-                                text: "Total Rows"
-                                font.pixelSize: 12
-                                color: Theme.textSecondary
-                            }
-                            
-                            Text {
-                                text: bridge && bridge.dataQualityProfile.profile ? 
-                                      bridge.dataQualityProfile.profile.total_rows.toLocaleString() : "0"
-                                font.pixelSize: 24
-                                font.weight: Font.Bold
-                                color: Theme.darkMode ? "white" : Theme.textPrimary
-                            }
-                        }
-                    }
-                }
-                
-                Rectangle {
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: 100
-                    color: Theme.dialogBackground
-                    opacity: 0.9
-                    radius: Theme.radiusXLarge
-                    border.color: Theme.successColor
-                    border.width: Theme.borderWidthThin
-                    
-                    RowLayout {
-                        anchors.fill: parent
-                        anchors.margins: Theme.paddingXLarge
-                        spacing: Theme.paddingLarge
-                        
-                        Text {
-                            text: "📋"
-                            font.pixelSize: 32
-                        }
-                        
-                        ColumnLayout {
-                            spacing: 5
-                            
-                            Text {
-                                text: "Total Columns"
-                                font.pixelSize: 12
-                                color: Theme.textSecondary
-                            }
-                            
-                            Text {
-                                text: bridge && bridge.dataQualityProfile.profile ? 
-                                      bridge.dataQualityProfile.profile.total_columns : "0"
-                                font.pixelSize: 24
-                                font.weight: Font.Bold
-                                color: Theme.darkMode ? "white" : Theme.textPrimary
-                            }
-                        }
-                    }
-                }
-                
-                Rectangle {
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: 100
-                    color: Theme.dialogBackground
-                    opacity: 0.9
-                    radius: Theme.radiusXLarge
-                    border.color: Theme.warningColor
-                    border.width: Theme.borderWidthThin
-                    
-                    RowLayout {
-                        anchors.fill: parent
-                        anchors.margins: Theme.paddingXLarge
-                        spacing: Theme.paddingLarge
-                        
-                        Text {
-                            text: "⚠️"
-                            font.pixelSize: 32
-                        }
-                        
-                        ColumnLayout {
-                            spacing: 5
-                            
-                            Text {
-                                text: "Issues Found"
-                                font.pixelSize: 12
-                                color: Theme.textSecondary
-                            }
-                            
-                            Text {
-                                text: getTotalIssues()
-                                font.pixelSize: 24
-                                font.weight: Font.Bold
-                                color: Theme.warningColor
-                            }
-                        }
-                    }
-                }
-            }
-            
-            // Anomalies Section
             Rectangle {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 300
-                color: Theme.dialogBackground
-                opacity: 0.9
-                radius: Theme.radiusXLarge
-                border.color: Theme.borderColor
+                Layout.preferredHeight: 60
+                color: Theme.cardBackground
+                radius: Theme.radiusMedium
+                border.color: Theme.primaryColor
                 border.width: Theme.borderWidthThin
                 
-                ColumnLayout {
+                RowLayout {
                     anchors.fill: parent
-                    anchors.margins: Theme.paddingXLarge
-                    spacing: Theme.paddingLarge
+                    anchors.margins: Theme.paddingMedium
+                    spacing: Theme.spacingSmall
                     
                     Text {
-                        text: "⚠️ Detected Anomalies"
-                        font.pixelSize: 16
-                        font.weight: Font.Bold
-                        color: Theme.darkMode ? "white" : Theme.textPrimary
+                        text: "📊"
+                        font.pixelSize: 20
                     }
                     
-                    ScrollView {
+                    ColumnLayout {
+                        spacing: 2
                         Layout.fillWidth: true
-                        Layout.fillHeight: true
-                        clip: true
                         
-                        ColumnLayout {
-                            width: parent.width
-                            spacing: Theme.paddingMedium
+                        Text {
+                            text: "Rows"
+                            font.pixelSize: Theme.fontSizeSmall
+                            font.family: Theme.fontFamily
+                            color: Theme.textSecondary
+                        }
+                        
+                        Text {
+                            text: bridge && bridge.dataQualityProfile && bridge.dataQualityProfile.profile ? 
+                                  bridge.dataQualityProfile.profile.total_rows.toLocaleString() : "0"
+                            font.pixelSize: Theme.fontSizeLarge + 4
+                            font.weight: Font.Bold
+                            font.family: Theme.fontFamily
+                            color: Theme.textPrimary
+                        }
+                    }
+                }
+            }
+            
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 60
+                color: Theme.cardBackground
+                radius: Theme.radiusMedium
+                border.color: Theme.successColor
+                border.width: Theme.borderWidthThin
+                
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.margins: Theme.paddingMedium
+                    spacing: Theme.spacingSmall
+                    
+                    Text {
+                        text: "📋"
+                        font.pixelSize: 20
+                    }
+                    
+                    ColumnLayout {
+                        spacing: 2
+                        Layout.fillWidth: true
+                        
+                        Text {
+                            text: "Columns"
+                            font.pixelSize: Theme.fontSizeSmall
+                            font.family: Theme.fontFamily
+                            color: Theme.textSecondary
+                        }
+                        
+                        Text {
+                            text: bridge && bridge.dataQualityProfile && bridge.dataQualityProfile.profile ? 
+                                  bridge.dataQualityProfile.profile.total_columns : "0"
+                            font.pixelSize: Theme.fontSizeLarge + 4
+                            font.weight: Font.Bold
+                            font.family: Theme.fontFamily
+                            color: Theme.textPrimary
+                        }
+                    }
+                }
+            }
+            
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 60
+                color: Theme.cardBackground
+                radius: Theme.radiusMedium
+                border.color: Theme.warningColor
+                border.width: Theme.borderWidthThin
+                
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.margins: Theme.paddingMedium
+                    spacing: Theme.spacingSmall
+                    
+                    Text {
+                        text: "⚠️"
+                        font.pixelSize: 20
+                    }
+                    
+                    ColumnLayout {
+                        spacing: 2
+                        Layout.fillWidth: true
+                        
+                        Text {
+                            text: "Issues"
+                            font.pixelSize: Theme.fontSizeSmall
+                            font.family: Theme.fontFamily
+                            color: Theme.textSecondary
+                        }
+                        
+                        Text {
+                            text: getTotalIssues()
+                            font.pixelSize: Theme.fontSizeLarge + 4
+                            font.weight: Font.Bold
+                            font.family: Theme.fontFamily
+                            color: Theme.warningColor
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Anomalies Section - compact
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            color: Theme.cardBackground
+            radius: Theme.radiusMedium
+            border.color: Theme.borderColor
+            border.width: Theme.borderWidthThin
+            
+            ColumnLayout {
+                anchors.fill: parent
+                anchors.margins: Theme.paddingMedium
+                spacing: Theme.spacingSmall
+                
+                Text {
+                    text: "⚠️ Anomalies"
+                    font.pixelSize: Theme.fontSizeLarge
+                    font.weight: Font.Bold
+                    font.family: Theme.fontFamily
+                    color: Theme.textPrimary
+                }
+                
+                ScrollView {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    clip: true
+                    
+                    ColumnLayout {
+                        width: parent.parent.width - Theme.paddingMedium * 2
+                        spacing: Theme.spacingXSmall
+                        
+                        Repeater {
+                            model: getAnomaliesList()
                             
-                            Repeater {
-                                model: getAnomaliesList()
+                            delegate: Rectangle {
+                                Layout.fillWidth: true
+                                height: 28
+                                color: Theme.backgroundHover
+                                radius: Theme.radiusSmall
                                 
-                                delegate: Rectangle {
-                                    Layout.fillWidth: true
-                                    height: 40
-                                    color: Theme.dialogInputBackground
-                                    radius: Theme.radiusLarge
+                                RowLayout {
+                                    anchors.fill: parent
+                                    anchors.leftMargin: Theme.paddingSmall
+                                    anchors.rightMargin: Theme.paddingSmall
+                                    spacing: Theme.spacingSmall
                                     
-                                    RowLayout {
-                                        anchors.fill: parent
-                                        anchors.leftMargin: Theme.paddingLarge
-                                        anchors.rightMargin: Theme.paddingLarge
-                                        spacing: Theme.paddingMedium
-                                        
-                                        Text {
-                                            text: getIssueIcon(modelData.type)
-                                            font.pixelSize: 16
-                                        }
-                                        
-                                        Text {
-                                            text: modelData.message
-                                            font.pixelSize: 13
-                                            color: Theme.textSecondary
-                                            Layout.fillWidth: true
-                                        }
+                                    Text {
+                                        text: getIssueIcon(modelData.type)
+                                        font.pixelSize: 12
+                                    }
+                                    
+                                    Text {
+                                        text: modelData.message
+                                        font.pixelSize: Theme.fontSizeSmall
+                                        font.family: Theme.fontFamily
+                                        color: Theme.textSecondary
+                                        Layout.fillWidth: true
+                                        elide: Text.ElideRight
                                     }
                                 }
                             }
+                        }
+                        
+                        // Empty state
+                        Item {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 120
+                            visible: getAnomaliesList().length === 0
                             
-                            // Empty state
-                            Item {
-                                Layout.fillWidth: true
-                                Layout.preferredHeight: 150
-                                visible: getAnomaliesList().length === 0
+                            ColumnLayout {
+                                anchors.centerIn: parent
+                                spacing: Theme.spacingSmall
                                 
-                                ColumnLayout {
-                                    anchors.centerIn: parent
-                                    spacing: Theme.paddingMedium
-                                    
-                                    Text {
-                                        text: "✅"
-                                        font.pixelSize: 48
-                                        Layout.alignment: Qt.AlignHCenter
-                                    }
-                                    
-                                    Text {
-                                        text: "Không phát hiện vấn đề"
-                                        font.pixelSize: 14
-                                        color: Theme.successColor
-                                        Layout.alignment: Qt.AlignHCenter
-                                    }
+                                Text {
+                                    text: "✅"
+                                    font.pixelSize: 32
+                                    Layout.alignment: Qt.AlignHCenter
+                                }
+                                
+                                Text {
+                                    text: "No issues detected"
+                                    font.pixelSize: Theme.fontSizeSmall
+                                    font.family: Theme.fontFamily
+                                    color: Theme.successColor
+                                    Layout.alignment: Qt.AlignHCenter
                                 }
                             }
                         }
@@ -239,7 +244,7 @@ Item {
     }
     
     function getTotalIssues() {
-        if (!bridge || !bridge.dataQualityProfile.anomalies) return "0"
+        if (!bridge || !bridge.dataQualityProfile || !bridge.dataQualityProfile.anomalies) return "0"
         
         var anomalies = bridge.dataQualityProfile.anomalies
         var total = 0
@@ -254,7 +259,7 @@ Item {
     }
     
     function getAnomaliesList() {
-        if (!bridge || !bridge.dataQualityProfile.anomalies) return []
+        if (!bridge || !bridge.dataQualityProfile || !bridge.dataQualityProfile.anomalies) return []
         
         var anomalies = bridge.dataQualityProfile.anomalies
         var list = []

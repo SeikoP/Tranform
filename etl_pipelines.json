@@ -10,6 +10,12 @@
           "type": "remove_duplicates",
           "config": {},
           "enabled": true
+        },
+        {
+          "name": "1",
+          "type": "fill_missing",
+          "config": {},
+          "enabled": true
         }
       ]
     }
