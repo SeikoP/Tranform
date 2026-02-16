@@ -21,90 +21,66 @@ Item {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 30
-        spacing: 25
+        anchors.margins: 20
+        spacing: 15
 
         // Stats Cards
         RowLayout {
             Layout.fillWidth: true
-            spacing: 20
+            spacing: 15
 
             StatCard {
                 title: "Số bản ghi"
                 value: bridge ? bridge.stats.records : 0
                 icon: "REC"
-                statColor: "#2563EB"
+                statColor: "#2196F3"
                 Layout.fillWidth: true
-                Layout.preferredHeight: 100
+                Layout.preferredHeight: 80
             }
             StatCard {
                 title: "Số cột"
                 value: bridge ? bridge.stats.columns : 0
                 icon: "COL"
-                statColor: "#9333EA"
+                statColor: "#9C27B0"
                 Layout.fillWidth: true
-                Layout.preferredHeight: 100
+                Layout.preferredHeight: 80
             }
             StatCard {
                 title: "Dim Candidates"
                 value: bridge ? bridge.stats.dim : 0
                 icon: "DIM"
-                statColor: "#EA580C"
+                statColor: "#FF9800"
                 Layout.fillWidth: true
-                Layout.preferredHeight: 100
+                Layout.preferredHeight: 80
             }
             StatCard {
                 title: "Fact Candidates"
                 value: bridge ? bridge.stats.fact : 0
                 icon: "FCT"
-                statColor: "#0D9488"
+                statColor: "#009688"
                 Layout.fillWidth: true
-                Layout.preferredHeight: 100
+                Layout.preferredHeight: 80
             }
         }
 
         // Data Preview Title
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: 10
-            
-            Rectangle {
-                width: 4
-                height: 24
-                radius: 2
-                gradient: Gradient {
-                    GradientStop { position: 0.0; color: "#3B82F6" }
-                    GradientStop { position: 1.0; color: "#8B5CF6" }
-                }
-            }
-            
-            Text {
-                text: "Xem trước Dữ liệu (15 dòng đầu)"
-                font.pixelSize: 20
-                font.weight: Font.Bold
-                font.family: "Segoe UI"
-                color: "white"
-            }
+        Text {
+            text: "Xem trước dữ liệu (15 dòng đầu)"
+            font.pixelSize: 14
+            font.weight: Font.DemiBold
+            font.family: "Microsoft YaHei UI"
+            color: "#333333"
         }
 
         // Data Table Container
         Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            color: "#1E293B"
-            opacity: 0.9
-            radius: 16
-            border.color: "#334155"
+            color: "white"
+            radius: 4
+            border.color: "#E0E0E0"
             border.width: 1
             clip: true
-            
-            layer.enabled: true
-            layer.effect: MultiEffect {
-                shadowEnabled: true
-                shadowColor: "#000000"
-                shadowOpacity: 0.4
-                shadowBlur: 20
-            }
 
             ScrollView {
                 anchors.fill: parent
@@ -118,28 +94,27 @@ Item {
                     // Table Header
                     Row {
                         Layout.fillWidth: true
-                        height: 55
+                        height: 40
                         
                         Repeater {
                             model: bridge ? bridge.columnNames : []
                             delegate: Rectangle {
-                                width: 180
-                                height: 55
-                                gradient: Gradient {
-                                    GradientStop { position: 0.0; color: "#334155" }
-                                    GradientStop { position: 1.0; color: "#1E293B" }
-                                }
-                                border.color: "#475569"
+                                width: 150
+                                height: 40
+                                color: "#FAFAFA"
+                                border.color: "#E0E0E0"
+                                border.width: 1
                                 
                                 Text {
                                     anchors.centerIn: parent
-                                    anchors.margins: 10
+                                    anchors.margins: 8
                                     text: modelData
-                                    font.pixelSize: 13
-                                    font.weight: Font.Bold
-                                    color: "#60A5FA"
+                                    font.pixelSize: 12
+                                    font.weight: Font.DemiBold
+                                    font.family: "Microsoft YaHei UI"
+                                    color: "#333333"
                                     elide: Text.ElideRight
-                                    width: parent.width - 20
+                                    width: parent.width - 16
                                     horizontalAlignment: Text.AlignHCenter
                                 }
                             }
@@ -150,29 +125,30 @@ Item {
                     Repeater {
                         model: bridge ? bridge.previewData : []
                         delegate: Row {
-                            height: 45
+                            height: 36
                             
                             Repeater {
                                 model: bridge ? bridge.columnNames : []
                                 delegate: Rectangle {
-                                    width: 180
-                                    height: 45
-                                    color: index % 2 === 0 ? "#0F172A" : "#1E293B"
-                                    border.color: "#334155"
-                                    opacity: rowMouseArea.containsMouse ? 1.0 : 0.8
+                                    width: 150
+                                    height: 36
+                                    color: rowMouseArea.containsMouse ? "#F5F5F5" : "white"
+                                    border.color: "#E0E0E0"
+                                    border.width: 1
                                     
-                                    Behavior on opacity {
-                                        NumberAnimation { duration: 150 }
+                                    Behavior on color {
+                                        ColorAnimation { duration: 100 }
                                     }
                                     
                                     Text {
                                         anchors.centerIn: parent
-                                        anchors.margins: 10
+                                        anchors.margins: 8
                                         text: modelData ? parent.parent.modelData[modelData] : ""
-                                        color: "#CBD5E1"
-                                        font.pixelSize: 13
+                                        color: "#666666"
+                                        font.pixelSize: 11
+                                        font.family: "Microsoft YaHei UI"
                                         elide: Text.ElideRight
-                                        width: parent.width - 20
+                                        width: parent.width - 16
                                         horizontalAlignment: Text.AlignHCenter
                                     }
                                 }

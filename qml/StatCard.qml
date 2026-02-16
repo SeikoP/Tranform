@@ -9,35 +9,15 @@ Rectangle {
     property string icon: ""
     property color statColor: "blue"
 
-    color: "#1E293B"
-    opacity: 0.9
-    radius: 16
-    border.color: Qt.lighter(statColor, 1.3)
+    color: "white"
+    radius: 4
+    border.color: "#E0E0E0"
     border.width: 1
     
-    layer.enabled: true
-    layer.effect: MultiEffect {
-        shadowEnabled: true
-        shadowColor: statColor
-        shadowOpacity: 0.3
-        shadowBlur: 15
-    }
-    
-    // Gradient overlay
-    Rectangle {
-        anchors.fill: parent
-        radius: parent.radius
-        opacity: 0.1
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: statColor }
-            GradientStop { position: 1.0; color: "transparent" }
-        }
-    }
-    
     // Hover effect
-    scale: mouseArea.containsMouse ? 1.03 : 1.0
+    scale: mouseArea.containsMouse ? 1.02 : 1.0
     Behavior on scale {
-        NumberAnimation { duration: 200; easing.type: Easing.OutQuad }
+        NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
     }
     
     MouseArea {
@@ -48,44 +28,42 @@ Rectangle {
 
     RowLayout {
         anchors.fill: parent
-        anchors.margins: 20
-        spacing: 15
+        anchors.margins: 15
+        spacing: 12
 
         Rectangle {
-            width: 50
-            height: 50
-            radius: 12
+            width: 40
+            height: 40
+            radius: 4
             color: statColor
-            opacity: 0.2
+            opacity: 0.15
             
             Text {
                 anchors.centerIn: parent
                 text: icon
-                font.pixelSize: 14
+                font.pixelSize: 11
                 font.weight: Font.Bold
-                font.family: "Segoe UI"
+                font.family: "Microsoft YaHei UI"
                 color: statColor
             }
         }
 
         ColumnLayout {
-            spacing: 4
+            spacing: 2
             Layout.fillWidth: true
             
             Text {
                 text: title
-                color: "#94A3B8"
-                font.pixelSize: 13
-                font.weight: Font.Medium
-                font.family: "Segoe UI"
-                font.letterSpacing: 0.5
+                color: "#999999"
+                font.pixelSize: 11
+                font.family: "Microsoft YaHei UI"
             }
             Text {
                 text: value.toLocaleString()
-                color: "white"
-                font.pixelSize: 28
+                color: "#333333"
+                font.pixelSize: 20
                 font.weight: Font.Bold
-                font.family: "Segoe UI"
+                font.family: "Microsoft YaHei UI"
             }
         }
     }

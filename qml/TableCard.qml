@@ -8,26 +8,17 @@ Rectangle {
     property string tableName: ""
     property list<var> columns: []
 
-    width: 320
-    height: Math.max(180, 70 + columns.length * 35 + 120)
-    radius: 16
-    color: "#1E293B"
-    opacity: 0.95
-    border.color: tableName.toLowerCase().startsWith("fact") ? "#0D9488" : "#3B82F6"
-    border.width: 2
-    
-    layer.enabled: true
-    layer.effect: MultiEffect {
-        shadowEnabled: true
-        shadowColor: tableName.toLowerCase().startsWith("fact") ? "#0D9488" : "#3B82F6"
-        shadowOpacity: 0.4
-        shadowBlur: 20
-    }
+    width: 280
+    height: Math.max(150, 60 + columns.length * 32 + 100)
+    radius: 4
+    color: "white"
+    border.color: "#E0E0E0"
+    border.width: 1
     
     // Hover animation
-    scale: cardMouseArea.containsMouse ? 1.02 : 1.0
+    scale: cardMouseArea.containsMouse ? 1.01 : 1.0
     Behavior on scale {
-        NumberAnimation { duration: 200; easing.type: Easing.OutQuad }
+        NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
     }
     
     MouseArea {
@@ -43,73 +34,64 @@ Rectangle {
         // Header
         Rectangle {
             Layout.fillWidth: true
-            height: 60
-            radius: 16
-            
-            gradient: Gradient {
-                GradientStop { 
-                    position: 0.0
-                    color: tableName.toLowerCase().startsWith("fact") ? "#0D9488" : "#3B82F6"
-                }
-                GradientStop { 
-                    position: 1.0
-                    color: tableName.toLowerCase().startsWith("fact") ? "#0F766E" : "#2563EB"
-                }
-            }
+            height: 48
+            radius: 4
+            color: tableName.toLowerCase().startsWith("fact") ? "#E8F5E9" : "#E3F2FD"
             
             // Only top corners rounded
             Rectangle {
                 anchors.bottom: parent.bottom
                 width: parent.width
-                height: 16
-                color: parent.gradient.stops[1].color
+                height: 4
+                color: parent.color
             }
 
             RowLayout {
                 anchors.fill: parent
-                anchors.leftMargin: 20
-                anchors.rightMargin: 20
-                spacing: 12
+                anchors.leftMargin: 15
+                anchors.rightMargin: 15
+                spacing: 10
                 
                 Rectangle {
-                    width: 32
-                    height: 32
-                    radius: 6
-                    color: "white"
+                    width: 28
+                    height: 28
+                    radius: 4
+                    color: tableName.toLowerCase().startsWith("fact") ? "#4CAF50" : "#2196F3"
                     opacity: 0.2
                     
                     Text {
                         anchors.centerIn: parent
                         text: tableName.toLowerCase().startsWith("fact") ? "F" : "D"
-                        font.pixelSize: 16
+                        font.pixelSize: 14
                         font.weight: Font.Bold
-                        font.family: "Segoe UI"
-                        color: "white"
+                        font.family: "Microsoft YaHei UI"
+                        color: tableName.toLowerCase().startsWith("fact") ? "#4CAF50" : "#2196F3"
                     }
                 }
                 
                 Text {
                     text: tableName
-                    font.pixelSize: 16
-                    font.weight: Font.Bold
-                    font.family: "Segoe UI"
-                    color: "white"
+                    font.pixelSize: 14
+                    font.weight: Font.DemiBold
+                    font.family: "Microsoft YaHei UI"
+                    color: "#333333"
                     Layout.fillWidth: true
                 }
                 
                 Rectangle {
-                    width: 50
-                    height: 24
-                    radius: 12
-                    color: "white"
-                    opacity: 0.2
+                    width: 40
+                    height: 20
+                    radius: 3
+                    color: tableName.toLowerCase().startsWith("fact") ? "#4CAF50" : "#2196F3"
+                    opacity: 0.15
                     
                     Text {
                         anchors.centerIn: parent
                         text: tableName.toLowerCase().startsWith("fact") ? "Fact" : "Dim"
                         font.pixelSize: 10
                         font.weight: Font.Bold
-                        color: "white"
+                        font.family: "Microsoft YaHei UI"
+                        color: tableName.toLowerCase().startsWith("fact") ? "#4CAF50" : "#2196F3"
                     }
                 }
             }
@@ -118,22 +100,21 @@ Rectangle {
         // Body - Columns List
         ColumnLayout {
             Layout.fillWidth: true
-            Layout.margins: 20
-            spacing: 10
+            Layout.margins: 15
+            spacing: 6
 
             Repeater {
                 model: columns
                 delegate: Rectangle {
                     Layout.fillWidth: true
-                    height: 40
-                    radius: 8
-                    color: "#0F172A"
-                    opacity: columnMouseArea.containsMouse ? 1.0 : 0.6
-                    border.color: modelData.is_primary ? "#F59E0B" : "#334155"
-                    border.width: modelData.is_primary ? 2 : 1
+                    height: 32
+                    radius: 3
+                    color: columnMouseArea.containsMouse ? "#F5F5F5" : "transparent"
+                    border.color: modelData.is_primary ? "#FF9800" : "#E0E0E0"
+                    border.width: modelData.is_primary ? 1 : 0
                     
-                    Behavior on opacity {
-                        NumberAnimation { duration: 150 }
+                    Behavior on color {
+                        ColorAnimation { duration: 100 }
                     }
                     
                     MouseArea {
@@ -144,41 +125,41 @@ Rectangle {
                     
                     RowLayout {
                         anchors.fill: parent
-                        anchors.leftMargin: 12
-                        anchors.rightMargin: 12
-                        spacing: 10
+                        anchors.leftMargin: 10
+                        anchors.rightMargin: 10
+                        spacing: 8
                         
                         Rectangle {
-                            width: 24
-                            height: 24
-                            radius: 4
-                            color: modelData.is_primary ? "#F59E0B" : (modelData.ref_table ? "#3B82F6" : "#64748B")
-                            opacity: 0.3
+                            width: 20
+                            height: 20
+                            radius: 3
+                            color: modelData.is_primary ? "#FF9800" : (modelData.ref_table ? "#2196F3" : "#BDBDBD")
+                            opacity: 0.2
                             
                             Text {
                                 anchors.centerIn: parent
                                 text: modelData.is_primary ? "PK" : (modelData.ref_table ? "FK" : "")
-                                font.pixelSize: 9
+                                font.pixelSize: 8
                                 font.weight: Font.Bold
-                                font.family: "Segoe UI"
-                                color: "white"
+                                font.family: "Microsoft YaHei UI"
+                                color: modelData.is_primary ? "#FF9800" : (modelData.ref_table ? "#2196F3" : "#BDBDBD")
                             }
                         }
                         
                         Text {
                             text: modelData.name
-                            font.pixelSize: 14
-                            font.weight: modelData.is_primary ? Font.Bold : Font.Normal
-                            font.family: "Segoe UI"
-                            color: modelData.is_primary ? "#FCD34D" : "#E2E8F0"
+                            font.pixelSize: 12
+                            font.weight: modelData.is_primary ? Font.DemiBold : Font.Normal
+                            font.family: "Microsoft YaHei UI"
+                            color: "#333333"
                             Layout.fillWidth: true
                         }
                         
                         Text {
                             text: modelData.ref_table ? "→ " + modelData.ref_table : ""
-                            font.pixelSize: 11
-                            color: "#60A5FA"
-                            font.italic: true
+                            font.pixelSize: 10
+                            font.family: "Microsoft YaHei UI"
+                            color: "#999999"
                             visible: modelData.ref_table !== null
                         }
                     }
@@ -188,79 +169,69 @@ Rectangle {
             Rectangle {
                 Layout.fillWidth: true
                 height: 1
-                gradient: Gradient {
-                    orientation: Gradient.Horizontal
-                    GradientStop { position: 0.0; color: "transparent" }
-                    GradientStop { position: 0.5; color: "#334155" }
-                    GradientStop { position: 1.0; color: "transparent" }
-                }
-                Layout.topMargin: 10
+                color: "#E0E0E0"
+                Layout.topMargin: 8
             }
 
             // Add Field area
             RowLayout {
-                spacing: 8
-                Layout.topMargin: 10
+                spacing: 6
+                Layout.topMargin: 8
                 
                 ComboBox {
                     id: fieldSelector
                     model: bridge ? bridge.columnNames : []
                     Layout.fillWidth: true
-                    font.pixelSize: 13
+                    font.pixelSize: 11
+                    font.family: "Microsoft YaHei UI"
                     
                     background: Rectangle {
-                        color: "#0F172A"
-                        radius: 8
-                        border.color: fieldSelector.activeFocus ? "#3B82F6" : "#334155"
+                        color: "white"
+                        radius: 3
+                        border.color: fieldSelector.activeFocus ? "#2196F3" : "#E0E0E0"
                         border.width: 1
                     }
                     
                     contentItem: Text {
                         text: fieldSelector.displayText
-                        color: "#E2E8F0"
+                        color: "#333333"
                         font: fieldSelector.font
                         verticalAlignment: Text.AlignVCenter
-                        leftPadding: 10
+                        leftPadding: 8
                     }
                 }
                 
                 CheckBox {
                     id: pkCheck
                     text: "PK"
-                    font.pixelSize: 11
+                    font.pixelSize: 10
                     font.weight: Font.Bold
+                    font.family: "Microsoft YaHei UI"
                     
                     contentItem: Text {
                         text: pkCheck.text
                         font: pkCheck.font
-                        color: pkCheck.checked ? "#FCD34D" : "#94A3B8"
-                        leftPadding: pkCheck.indicator.width + 5
+                        color: pkCheck.checked ? "#FF9800" : "#999999"
+                        leftPadding: pkCheck.indicator.width + 4
                         verticalAlignment: Text.AlignVCenter
                     }
                 }
                 
                 Button {
                     text: "+"
-                    width: 40
-                    height: 40
-                    font.pixelSize: 20
+                    width: 32
+                    height: 32
+                    font.pixelSize: 16
                     font.weight: Font.Bold
+                    font.family: "Microsoft YaHei UI"
                     
                     onClicked: {
                         bridge.add_field(tableName, fieldSelector.currentText, pkCheck.checked, "")
                     }
                     
                     background: Rectangle {
-                        gradient: Gradient {
-                            GradientStop { position: 0.0; color: parent.hovered ? "#2563EB" : "#3B82F6" }
-                            GradientStop { position: 1.0; color: parent.hovered ? "#1E40AF" : "#2563EB" }
-                        }
-                        radius: 8
-                        scale: parent.pressed ? 0.9 : 1.0
-                        
-                        Behavior on scale {
-                            NumberAnimation { duration: 100 }
-                        }
+                        color: parent.hovered ? "#1976D2" : "#2196F3"
+                        radius: 3
                     }
                     
                     contentItem: Text {

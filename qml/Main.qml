@@ -6,50 +6,17 @@ import QtQuick.Effects
 
 ApplicationWindow {
     visible: true
-    width: 1400
-    height: 900
-    title: "Transform 3NF - Premium Edition"
-    color: "#0A0E1A"
+    width: 1100
+    height: 700
+    minimumWidth: 900
+    minimumHeight: 600
+    title: "Transform 3NF"
+    color: "#F5F5F5"
     
-    // Animated gradient background
+    // Clean flat background
     Rectangle {
         anchors.fill: parent
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "#0A0E1A" }
-            GradientStop { position: 0.5; color: "#0F172A" }
-            GradientStop { position: 1.0; color: "#1E293B" }
-        }
-        
-        // Animated orbs
-        Repeater {
-            model: 3
-            Rectangle {
-                width: 300 + index * 100
-                height: width
-                radius: width / 2
-                opacity: 0.03
-                gradient: Gradient {
-                    GradientStop { position: 0.0; color: "#3B82F6" }
-                    GradientStop { position: 1.0; color: "#8B5CF6" }
-                }
-                x: parent.width * (0.2 + index * 0.3)
-                y: parent.height * (0.3 + index * 0.2)
-                
-                SequentialAnimation on y {
-                    loops: Animation.Infinite
-                    NumberAnimation { 
-                        to: parent.height * (0.3 + index * 0.2) + 50
-                        duration: 3000 + index * 1000
-                        easing.type: Easing.InOutQuad
-                    }
-                    NumberAnimation { 
-                        to: parent.height * (0.3 + index * 0.2)
-                        duration: 3000 + index * 1000
-                        easing.type: Easing.InOutQuad
-                    }
-                }
-            }
-        }
+        color: "#F5F5F5"
     }
 
     RowLayout {
@@ -60,7 +27,7 @@ ApplicationWindow {
         Sidebar {
             id: sidebar
             Layout.fillHeight: true
-            Layout.preferredWidth: 260
+            Layout.preferredWidth: 200
         }
 
         // Main Content Area
@@ -72,118 +39,96 @@ ApplicationWindow {
             // Header / Navigation Tabs area
             Rectangle {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 70
-                color: "transparent"
+                Layout.preferredHeight: 48
+                color: "white"
                 
                 Rectangle {
-                    anchors.fill: parent
-                    anchors.margins: 15
-                    anchors.bottomMargin: 0
-                    color: "#1E293B"
-                    opacity: 0.6
-                    radius: 16
-                    border.color: "#334155"
-                    border.width: 1
-                    
-                    layer.enabled: true
-                    layer.effect: MultiEffect {
-                        shadowEnabled: true
-                        shadowColor: "#000000"
-                        shadowOpacity: 0.3
-                        shadowBlur: 20
-                    }
+                    anchors.bottom: parent.bottom
+                    width: parent.width
+                    height: 1
+                    color: "#E0E0E0"
                 }
                 
                 TabBar {
                     id: mainTabs
                     anchors.fill: parent
-                    anchors.margins: 15
-                    anchors.bottomMargin: 0
+                    anchors.leftMargin: 10
                     background: Rectangle { color: "transparent" }
                     
                     TabButton { 
-                        text: "Dữ liệu Gốc"
-                        font.pixelSize: 15
-                        font.weight: Font.DemiBold
-                        font.family: "Segoe UI"
+                        text: "Dữ liệu"
+                        font.pixelSize: 13
+                        font.family: "Microsoft YaHei UI"
                         
                         contentItem: Text {
                             text: parent.text
                             font: parent.font
-                            color: parent.checked ? "#60A5FA" : "#94A3B8"
+                            color: parent.checked ? "#1976D2" : "#666666"
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
-                            
-                            Behavior on color {
-                                ColorAnimation { duration: 200 }
-                            }
                         }
                         
                         background: Rectangle {
-                            color: parent.checked ? "#1E40AF" : "transparent"
-                            radius: 12
-                            opacity: parent.checked ? 0.3 : (parent.hovered ? 0.1 : 0)
+                            color: "transparent"
                             
-                            Behavior on opacity {
-                                NumberAnimation { duration: 200 }
+                            Rectangle {
+                                anchors.bottom: parent.bottom
+                                width: parent.width
+                                height: 2
+                                color: "#1976D2"
+                                visible: parent.parent.checked
                             }
                         }
                     }
                     
                     TabButton { 
-                        text: "ETL Pipeline"
-                        font.pixelSize: 15
-                        font.weight: Font.DemiBold
-                        font.family: "Segoe UI"
+                        text: "ETL"
+                        font.pixelSize: 13
+                        font.family: "Microsoft YaHei UI"
                         
                         contentItem: Text {
                             text: parent.text
                             font: parent.font
-                            color: parent.checked ? "#10B981" : "#94A3B8"
+                            color: parent.checked ? "#1976D2" : "#666666"
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
-                            
-                            Behavior on color {
-                                ColorAnimation { duration: 200 }
-                            }
                         }
                         
                         background: Rectangle {
-                            color: parent.checked ? "#059669" : "transparent"
-                            radius: 12
-                            opacity: parent.checked ? 0.3 : (parent.hovered ? 0.1 : 0)
+                            color: "transparent"
                             
-                            Behavior on opacity {
-                                NumberAnimation { duration: 200 }
+                            Rectangle {
+                                anchors.bottom: parent.bottom
+                                width: parent.width
+                                height: 2
+                                color: "#1976D2"
+                                visible: parent.parent.checked
                             }
                         }
                     }
                     
                     TabButton { 
-                        text: "Mô hình ERD (3NF)"
-                        font.pixelSize: 15
-                        font.weight: Font.DemiBold
-                        font.family: "Segoe UI"
+                        text: "Mô hình ERD"
+                        font.pixelSize: 13
+                        font.family: "Microsoft YaHei UI"
                         
                         contentItem: Text {
                             text: parent.text
                             font: parent.font
-                            color: parent.checked ? "#60A5FA" : "#94A3B8"
+                            color: parent.checked ? "#1976D2" : "#666666"
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
-                            
-                            Behavior on color {
-                                ColorAnimation { duration: 200 }
-                            }
                         }
                         
                         background: Rectangle {
-                            color: parent.checked ? "#1E40AF" : "transparent"
-                            radius: 12
-                            opacity: parent.checked ? 0.3 : (parent.hovered ? 0.1 : 0)
+                            color: "transparent"
                             
-                            Behavior on opacity {
-                                NumberAnimation { duration: 200 }
+                            Rectangle {
+                                anchors.bottom: parent.bottom
+                                width: parent.width
+                                height: 2
+                                color: "#1976D2"
+                                visible: parent.parent.checked
                             }
                         }
                     }
@@ -212,62 +157,44 @@ ApplicationWindow {
             // Status Bar
             Rectangle {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 45
-                color: "#0F172A"
-                opacity: 0.8
+                Layout.preferredHeight: 32
+                color: "white"
                 
                 Rectangle {
                     anchors.top: parent.top
                     width: parent.width
                     height: 1
-                    gradient: Gradient {
-                        orientation: Gradient.Horizontal
-                        GradientStop { position: 0.0; color: "transparent" }
-                        GradientStop { position: 0.5; color: "#334155" }
-                        GradientStop { position: 1.0; color: "transparent" }
-                    }
+                    color: "#E0E0E0"
                 }
                 
                 RowLayout {
                     anchors.fill: parent
-                    anchors.leftMargin: 20
-                    anchors.rightMargin: 20
-                    spacing: 15
+                    anchors.leftMargin: 15
+                    anchors.rightMargin: 15
+                    spacing: 10
                     
                     Rectangle {
-                        width: 8
-                        height: 8
-                        radius: 4
+                        width: 6
+                        height: 6
+                        radius: 3
                         color: statusText.color
-                        
-                        SequentialAnimation on opacity {
-                            loops: Animation.Infinite
-                            NumberAnimation { to: 0.3; duration: 800 }
-                            NumberAnimation { to: 1.0; duration: 800 }
-                        }
                     }
                     
                     Text {
                         id: statusText
                         text: "Sẵn sàng"
-                        font.pixelSize: 13
-                        font.weight: Font.Medium
-                        font.family: "Segoe UI"
-                        color: "#10B981"
-                        
-                        Behavior on color {
-                            ColorAnimation { duration: 300 }
-                        }
+                        font.pixelSize: 12
+                        font.family: "Microsoft YaHei UI"
+                        color: "#4CAF50"
                     }
                     
                     Item { Layout.fillWidth: true }
                     
                     Text {
-                        text: "Premium Edition v3.0"
+                        text: "v3.0"
                         font.pixelSize: 11
-                        font.family: "Segoe UI"
-                        color: "#60A5FA"
-                        font.weight: Font.Medium
+                        font.family: "Microsoft YaHei UI"
+                        color: "#999999"
                     }
                 }
                 
@@ -275,9 +202,9 @@ ApplicationWindow {
                     target: bridge
                     function onStatusChanged(message, color) {
                         statusText.text = message
-                        if (color === "red") statusText.color = "#EF4444"
-                        else if (color === "green") statusText.color = "#10B981"
-                        else statusText.color = "#60A5FA"
+                        if (color === "red") statusText.color = "#F44336"
+                        else if (color === "green") statusText.color = "#4CAF50"
+                        else statusText.color = "#2196F3"
                     }
                 }
             }
